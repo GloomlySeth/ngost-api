@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  * Class PagesController
  * @package App\Controller
  * @Route("/api")
- * @IsGranted("ROLE_ADMIN")
  */
 
 class PagesController extends ApiController
