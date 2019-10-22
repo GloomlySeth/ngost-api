@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AuthController extends AbstractController
 {
     /**
-     * @Route("/register", methods={POST})
+     * @Route("/register", methods={"POST"})
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @param ValidatorInterface $validator
