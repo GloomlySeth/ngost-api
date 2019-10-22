@@ -27,13 +27,14 @@ class Users implements UserInterface, EquatableInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotNull(message="Имя пользователя быть пустым")
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotNull(message="Имя пользователя не может быть пустым")
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotNull(message="Email не может быть пустым")
      */
     private $email;
 
