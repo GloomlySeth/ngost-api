@@ -19,7 +19,15 @@ class AuthController extends AbstractController
     private $email;
     private $phone;
 
-    public function __construct(Request $request)
+
+    /**
+     * @Route("/register", methods={"POST"})
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
+     */
+    public function index(Request $request, UserPasswordEncoderInterface $encoder, ValidatorInterface $validator)
     {
         $parametersAsArray = [];
         if ($content = $request->getContent()) {
@@ -29,16 +37,6 @@ class AuthController extends AbstractController
         $this->setPassword($parametersAsArray);
         $this->setEmail($parametersAsArray);
         $this->setPhone($parametersAsArray);
-    }
-
-    /**
-     * @Route("/register", methods={"POST"})
-     * @param UserPasswordEncoderInterface $encoder
-     * @param ValidatorInterface $validator
-     * @return JsonResponse
-     */
-    public function index(UserPasswordEncoderInterface $encoder, ValidatorInterface $validator)
-    {
 
         $em = $this->getDoctrine()->getManager();
 
