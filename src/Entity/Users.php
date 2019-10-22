@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -67,6 +69,16 @@ class Users implements UserInterface, EquatableInterface
      * @ORM\Column(type="array")
      */
     private $roles = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Pages", mappedBy="user_updated")
+     */
+    private $pages;
+
+    public function __construct()
+    {
+        $this->pages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -224,5 +236,36 @@ class Users implements UserInterface, EquatableInterface
         }
 
         return true;
+    }
+
+    /**
+     * @return Collection|Pages[]
+     */
+    public function getPages(): Collection
+    {
+        return $this->pages;
+    }
+
+    public function addPage(Pages $page): self
+    {
+        if (!$this->pages->contains($page)) {
+            $this->pages[] = $page;
+            $page->setUserUpdated($this);
+        }
+
+        return $this;
+    }
+
+    public function removePage(Pages $page): self
+    {
+        if ($this->pages->contains($page)) {
+            $this->pages->removeElement($page);
+            // set the owning side to null (unless already changed)
+            if ($page->getUserUpdated() === $this) {
+                $page->setUserUpdated(null);
+            }
+        }
+
+        return $this;
     }
 }
