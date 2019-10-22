@@ -41,10 +41,18 @@ class AuthController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $user = new Users();
-        $user->setUsername($this->username);
-        $user->setEmail($this->email);
-        $user->setEmail($this->phone);
-        $user->setPassword($encoder->encodePassword($user, $this->password));
+        if (!is_null($this->username)) {
+            $user->setUsername($this->username);
+        }
+        if (!is_null($this->email)){
+            $user->setEmail($this->email);
+        }
+        if (!is_null($this->phone)){
+            $user->setPhone($this->phone);
+        }
+        if (!is_null($this->password)){
+            $user->setPassword($encoder->encodePassword($user, $this->password));
+        }
 
         $errors = $validator->validate($user);
         if (count($errors) > 0) {
