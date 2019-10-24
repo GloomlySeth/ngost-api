@@ -23,18 +23,18 @@ class Pages
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotNull(message="Заголовок не может быть пустым")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotNull(message="Нзавание не может быть пустым")
+     * @Assert\NotNull(message="Контент не может быть пустым")
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotNull(message="Контент не может быть пустым")
      */
     private $created_at;
 
@@ -70,7 +70,7 @@ class Pages
 
     /**
      * @ORM\Column(type="string", length=191, unique=true)
-     * @Assert\NotNull(message="Нзавание не может быть пустым")
+     * @Assert\NotNull(message="Название не может быть пустым")
      */
     private $name;
 
