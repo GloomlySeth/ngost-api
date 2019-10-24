@@ -211,15 +211,20 @@ class Pages
         $this->name = $name;
     }
 
-    public function getSlug(): ?string
+    /**
+     * @return mixed
+     */
+    public function getSlug()
     {
         return $this->slug;
     }
 
-    public function setSlug(SlugGenerator $generator)
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug): void
     {
-        $this->slug = $generator->generate($this->name);
-
-        return $this;
+        $this->slug = $slug;
     }
+
 }

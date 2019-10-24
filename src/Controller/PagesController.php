@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Pages;
-use App\Entity\Users;
+use Ausi\SlugGenerator\SlugGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -87,9 +86,11 @@ class PagesController extends ApiController
         } else {
             $status = 'draft';
         }
+        $generator = new SlugGenerator;
         $page = new Pages();
         $page->setTitle($title);
         $page->setName($name);
+        $page->setSlug($generator->generate($name));
         $page->setHeader($header);
         $page->setContent($content);
 
