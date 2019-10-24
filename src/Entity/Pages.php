@@ -65,6 +65,7 @@ class Pages
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull(message="Заголовок не может быть пустым")
      */
     private $header;
 
