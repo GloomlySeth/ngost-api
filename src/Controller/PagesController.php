@@ -24,11 +24,11 @@ class PagesController extends ApiController
     public function index(Request $request)
     {
         $pages = $this->getDoctrine()->getRepository(Pages::class)
-            ->findBy(
-                ['deleted_at' => null],
-                $this->sorting($request),
-                $this->getLimit($request),
-                $this->getOffset($request)
+            ->findAll(
+                ['deleted_at' => null]
+//                $this->sorting($request),
+//                $this->getLimit($request),
+//                $this->getOffset($request)
             );
         $data = [];
         foreach ($pages as $page) {
