@@ -155,29 +155,6 @@ class Pages
         return $this;
     }
 
-    public function getHeader(): ?string
-    {
-        return $this->header;
-    }
-
-    public function setHeader(string $header): self
-    {
-        $this->header = $header;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     /**
      * @return mixed
@@ -209,5 +186,37 @@ class Pages
     public function setContent($content): void
     {
         $this->content = $content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeader()
+    {
+        return $this->header;
+    }
+
+    /**
+     * @param mixed $header
+     */
+    public function setHeader($header): void
+    {
+        $this->header = $header;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
     }
 }
