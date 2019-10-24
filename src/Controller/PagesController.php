@@ -86,7 +86,7 @@ class PagesController extends ApiController
         } else {
             $status = 'draft';
         }
-        $generator = new SlugGenerator;
+        $generator = new SlugGenerator();
         $page = new Pages();
         $page->setTitle($title);
         $page->setName($name);
