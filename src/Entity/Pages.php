@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PagesRepository")
@@ -26,11 +27,13 @@ class Pages
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotNull(message="Нзавание не может быть пустым")
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotNull(message="Контент не может быть пустым")
      */
     private $created_at;
 
