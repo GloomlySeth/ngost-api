@@ -36,6 +36,9 @@ class PagesController extends ApiController
             $data[] = [
                 'id' => $page->getId(),
                 'title' => $page->getTitle(),
+                'name' => $page->getName(),
+                'header' => $page->getHeader(),
+                'slug' => $page->getSlug(),
                 'content' => $page->getContent(),
                 'user_updated' => null
             ];
