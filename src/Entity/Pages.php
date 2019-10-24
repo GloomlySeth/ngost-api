@@ -151,7 +151,7 @@ class Pages
 
     public function setSlug(SlugGenerator $generator)
     {
-        $this->slug = $generator->generate($this->name,['delimiter' => '_']);
+        $this->slug = $generator->generate($this->name);
 
         return $this;
     }
