@@ -25,7 +25,7 @@ class PagesController extends ApiController
     {
         $pages = $this->getDoctrine()->getRepository(Pages::class)
             ->findBy(
-                null,
+                ['deleted_at' => null],
                 $this->sorting($request),
                 $this->getLimit($request),
                 $this->getOffset($request)
