@@ -1,4 +1,7 @@
 {
+    "ausi/slug-generator": {
+        "version": "v1.1.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {

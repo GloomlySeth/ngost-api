@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ausi\SlugGenerator\SlugGenerator;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PagesRepository")
@@ -56,6 +57,22 @@ class Pages
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="pages")
      */
     private $user_updated;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $header;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotNull(message="Нзавание не может быть пустым")
+     */
+    private $name;
 
     public function getId(): ?int
     {
@@ -145,6 +162,43 @@ class Pages
     public function setUserUpdated(?Users $user_updated): self
     {
         $this->user_updated = $user_updated;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug()
+    {
+        $generator = new SlugGenerator;
+        $this->slug = $generator->generate($this->name,['delimiter' => '_']);
+
+        return $this;
+    }
+
+    public function getHeader(): ?string
+    {
+        return $this->header;
+    }
+
+    public function setHeader(string $header): self
+    {
+        $this->header = $header;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

@@ -69,14 +69,25 @@ class PagesController extends ApiController
         } else {
             $content = null;
         }
+        if (array_key_exists('name', $parametersAsArray)) {
+            $name = $parametersAsArray['name'];
+        } else {
+            $name = null;
+        }
+        if (array_key_exists('header', $parametersAsArray)) {
+            $header = $parametersAsArray['header'];
+        } else {
+            $header = null;
+        }
         if (array_key_exists('status', $parametersAsArray)) {
             $status = $parametersAsArray['status'];
         } else {
             $status = 'draft';
         }
-
         $page = new Pages();
         $page->setTitle($title);
+        $page->setName($name);
+        $page->setHeader($header);
         $page->setContent($content);
 
         $page->setUserUpdated($this->getUser());
