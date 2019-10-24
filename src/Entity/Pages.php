@@ -144,17 +144,7 @@ class Pages
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
 
-    public function setSlug(SlugGenerator $generator)
-    {
-        $this->slug = $generator->generate($this->name);
-
-        return $this;
-    }
 
 
     /**
@@ -219,5 +209,17 @@ class Pages
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(SlugGenerator $generator)
+    {
+        $this->slug = $generator->generate($this->name);
+
+        return $this;
     }
 }
