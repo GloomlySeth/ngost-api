@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiController extends AbstractController
 {
     const LIMIT = 15;
-    const OFFSET = 1;
+    const OFFSET = 0;
     const SORT_FIELD = 'created_at';
     const SORT_DIRECTION = 'DESC';
 
