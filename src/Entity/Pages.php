@@ -11,6 +11,7 @@ use Ausi\SlugGenerator\SlugGenerator;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PagesRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Pages
 {
