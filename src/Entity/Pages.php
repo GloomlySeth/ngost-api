@@ -7,7 +7,6 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
-use Ausi\SlugGenerator\SlugGenerator;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PagesRepository")
