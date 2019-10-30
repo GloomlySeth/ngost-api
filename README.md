@@ -8,8 +8,8 @@
        method: POST
        data: 
         {
-           "username" : string Username,
-           "password" : string Password
+           "username" : String username or email,
+           "password" : String password
         }
  2) register
  
