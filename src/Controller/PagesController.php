@@ -41,6 +41,12 @@ class PagesController extends ApiController
                 'content' => $page->getContent(),
                 'user_updated' => null
             ];
+            if(!is_null($user = $page->getUserUpdate())) {
+                $data['user_updated'] = [
+                    'id' => $user->getId(),
+                    'username' => $user->getUsername()
+                ];
+            }
         }
         return new JsonResponse([
             'data' => $data
