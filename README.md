@@ -22,3 +22,10 @@
             "email" : String "root@ngost.by",
             "phone": String "+375297555555"
          }
+         
+ **Ко всем остальным запросам крепить заголовок** 
+    
+    header: 
+             {
+                 Authorization: "Bearer " + token
+             }
