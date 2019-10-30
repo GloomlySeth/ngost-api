@@ -1,6 +1,6 @@
 **API DOCS**
 
-1) login_check
+1) login
 
    url: https://api.ngost.by/api/login_check
    
@@ -11,7 +11,9 @@
            "username" : string Username,
            "password" : string Password
         }
- 2) url: https://api.ngost.by/register
+ 2) register
+ 
+    url: https://api.ngost.by/register
     
         data type: JSON
         method: POST
