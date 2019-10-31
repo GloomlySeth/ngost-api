@@ -75,9 +75,15 @@ class Users implements UserInterface, EquatableInterface
      */
     private $pages;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\News", mappedBy="created_user")
+     */
+    private $news;
+
     public function __construct()
     {
         $this->pages = new ArrayCollection();
+        $this->news = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -263,6 +269,37 @@ class Users implements UserInterface, EquatableInterface
             // set the owning side to null (unless already changed)
             if ($page->getUserUpdated() === $this) {
                 $page->setUserUpdated(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|News[]
+     */
+    public function getNews(): Collection
+    {
+        return $this->news;
+    }
+
+    public function addNews(News $news): self
+    {
+        if (!$this->news->contains($news)) {
+            $this->news[] = $news;
+            $news->setCreatedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNews(News $news): self
+    {
+        if ($this->news->contains($news)) {
+            $this->news->removeElement($news);
+            // set the owning side to null (unless already changed)
+            if ($news->getCreatedUser() === $this) {
+                $news->setCreatedUser(null);
             }
         }
 
