@@ -37,5 +37,6 @@ security:
         - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY , methods: [POST]}
         - { path: ^/api/news, roles: IS_AUTHENTICATED_ANONYMOUSLY,  methods: [GET]}
+        - { path: ^/api/media, roles: IS_AUTHENTICATED_ANONYMOUSLY,  methods: [GET]}
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 

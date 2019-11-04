@@ -50,7 +50,7 @@
    1.2 Get all news
       
            url: https://api.ngost.by/api/news
-        
+           security: false
            method: GET
              
    1.3 Get new by id
@@ -78,7 +78,7 @@
               "image" : Integer id image,
               "short_desc" : String
            }
-   1.6 UPDATE media file
+   1.6 Create media file
                    
               url: https://api.ngost.by/api/media
                      
@@ -88,3 +88,9 @@
               {
                  "file": File
               }
+   1.7 Show media file
+                      
+                 url: https://api.ngost.by/api/media/{id}
+                       
+                 method: GET
+                 

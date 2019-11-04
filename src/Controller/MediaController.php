@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
 use App\Service\MediaHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MediaController extends AbstractController
 {
     /**
-     * @Route("/media", name="media", methods={"POST"})
+     * @Route("/media", methods={"POST"})
      * @param Request $request
      * @param MediaHelper $helper
      * @return JsonResponse
@@ -33,5 +34,24 @@ class MediaController extends AbstractController
             'id' => $file->getId(),
             'path' => $file->getFilePath()
         ],201);
+    }
+
+    /**
+     * @Route("/media/{id}", methods={"GET"})
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getFile($id)
+    {
+        $file = $this->getDoctrine()->getRepository(Media::class)->find($id);
+        if (is_null($file)) {
+            return new JsonResponse([
+                'message' => 'File not exist'
+            ],200);
+        }
+        return new JsonResponse([
+            'id' => $file->getId(),
+            'path' => $file->getFilePath()
+        ],200);
     }
 }
