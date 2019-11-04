@@ -37,7 +37,7 @@ class MediaHelper
         $file_id->setFileType($type);
         $em->persist($file_id);
         $em->flush();
-        return $file_id->getId();
+        return $file_id;
     }
 
     public function getTargetDirectory()

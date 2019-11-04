@@ -29,7 +29,8 @@ class MediaController extends AbstractController
         $file = $helper->upload($file);
         return new JsonResponse([
             'message' => 'add new file',
-            'id' => $file
+            'id' => $file->getId(),
+            'path' => $file->getFilePath()
         ],201);
     }
 }
