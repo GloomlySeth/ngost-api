@@ -13,7 +13,7 @@
         }
  2) register
  
-    url: https://api.ngost.by/register
+    url: https://api.ngost.by/api/register
     
         data type: JSON
         method: POST
@@ -43,7 +43,7 @@
            {
               "title": String,
               "description": Text,
-              "image" : File,
+              "image" : Integer id image,
               "short_desc" : String
            }
            
@@ -75,6 +75,16 @@
            {
               "title": String,
               "description": Text,
-              "image" : File,
+              "image" : Integer id image,
               "short_desc" : String
            }
+   1.6 UPDATE media file
+                   
+              url: https://api.ngost.by/api/media
+                     
+              data type: x-www-form-urlencoded
+              method: POST
+              data: 
+              {
+                 "file": File
+              }

@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
 use App\Entity\News;
+use App\Service\MediaHelper;
 use Ausi\SlugGenerator\SlugGenerator;
+use DateTime;
+use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class PagesController
+ * Class NewsController
  * @package App\Controller
  * @Route("/api")
  */
@@ -37,7 +41,7 @@ class NewsController extends ApiController
                 'id' => $new->getId(),
                 'title' => $new->getTitle(),
                 'description' => $new->getDescription(),
-                'image' => $new->getImage(),
+                'image' => null,
                 'created_at' => $new->getCreatedAt(),
                 'short_desc' => $new->getShortDesc(),
                 'created_user' => null
@@ -46,6 +50,14 @@ class NewsController extends ApiController
                 $data['created_user'] = [
                     'id' => $user->getId(),
                     'username' => $user->getUsername()
+                ];
+            }
+            if(!is_null($image = $new->getImage())) {
+                $data['image'] = [
+                    'id' => $image->getId(),
+                    'file_path' => $image->getFilePath(),
+                    'file_name' => $image->getFileName(),
+                    'file_type' => $image->getFileType()
                 ];
             }
         }
@@ -67,7 +79,7 @@ class NewsController extends ApiController
             'id' => $new->getId(),
             'title' => $new->getTitle(),
             'description' => $new->getDescription(),
-            'image' => $new->getImage(),
+            'image' => null,
             'created_at' => $new->getCreatedAt(),
             'short_desc' => $new->getShortDesc(),
             'created_user' => null
@@ -76,6 +88,14 @@ class NewsController extends ApiController
             $data['created_user'] = [
                 'id' => $user->getId(),
                 'username' => $user->getUsername()
+            ];
+        }
+        if(!is_null($image = $new->getImage())) {
+            $data['image'] = [
+                'id' => $image->getId(),
+                'file_path' => $image->getFilePath(),
+                'file_name' => $image->getFileName(),
+                'file_type' => $image->getFileType()
             ];
         }
         return new JsonResponse([
@@ -87,6 +107,7 @@ class NewsController extends ApiController
      * @Route("/news/{id}", methods={"DELETE"})
      * @param $id
      * @return JsonResponse
+     * @throws Exception
      */
     public function deleteNew($id)
     {
@@ -94,9 +115,9 @@ class NewsController extends ApiController
         $em = $this->getDoctrine()->getManager();
         $new = $this->getDoctrine()->getRepository(News::class)->find($id);
         if (!empty($new)){
-            $em->remove($new);
+            $new->setDeletedAt(new DateTime());
+            $em->persist($new);
             $em->flush();
-
             return new JsonResponse([
                 'message' => 'Delete news'
             ]);
@@ -110,11 +131,10 @@ class NewsController extends ApiController
      * @Route("/news", methods={"POST"})
      * @param Request $request
      * @param ValidatorInterface $validator
-     * @param UploadedFile $uploadedFile
      * @return JsonResponse
      */
 
-    public function createNew(Request $request,  ValidatorInterface $validator, UploadedFile $uploadedFile)
+    public function createNew(Request $request,  ValidatorInterface $validator)
     {
         $parametersAsArray = [];
         $em = $this->getDoctrine()->getManager();
@@ -126,25 +146,8 @@ class NewsController extends ApiController
         } else {
             $title = null;
         }
-        if (array_key_exists('image', $parametersAsArray)) {
-            $image = $parametersAsArray['image'];
-            $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-            // this is needed to safely include the file name as part of the URL
-            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
 
-            // Move the file to the directory where brochures are stored
-            try {
-                $image->move(
-                    $this->getParameter('brochures_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // ... handle exception if something happens during file upload
-            }
-        } else {
-            $newFilename = null;
-        }
+        //TODO create Media service
         if (array_key_exists('description', $parametersAsArray)) {
             $description = $parametersAsArray['description'];
         } else {
@@ -157,6 +160,17 @@ class NewsController extends ApiController
             $shortDesc = null;
         }
 
+        if (array_key_exists('image', $parametersAsArray)) {
+            $image = $parametersAsArray['image'];
+            if (!empty($image)) {
+                $image = $this->getDoctrine()->getRepository(Media::class)->find($image);
+            } else {
+                $image = null;
+            }
+        } else {
+            $image = null;
+        }
+
 
         $generator = new SlugGenerator();
         $new = new News();
@@ -164,7 +178,7 @@ class NewsController extends ApiController
         $new->setDescription($description);
         $new->setSlug($generator->generate($title));
         $new->setShortDesc($shortDesc);
-        $new->setImage($newFilename);
+        $new->setImage($image);
 
         $new->setCreatedUser($this->getUser());
         $errors = $validator->validate($new);
@@ -207,22 +221,13 @@ class NewsController extends ApiController
         }
         if (array_key_exists('image', $parametersAsArray)) {
             $image = $parametersAsArray['image'];
-            $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-            // this is needed to safely include the file name as part of the URL
-            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
-
-            // Move the file to the directory where brochures are stored
-            try {
-                $image->move(
-                    $this->getParameter('brochures_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // ... handle exception if something happens during file upload
+            if (!empty($image)) {
+                $image = $this->getDoctrine()->getRepository(Media::class)->find($image);
+            } else {
+                $image = null;
             }
         } else {
-            $newFilename = null;
+            $image = null;
         }
         if (array_key_exists('description', $parametersAsArray)) {
             $description = $parametersAsArray['description'];
@@ -245,7 +250,7 @@ class NewsController extends ApiController
         $new->setTitle($title);
         $new->setDescription($description);
         $new->setShortDesc($shortDesc);
-        $new->setImage($newFilename);
+        $new->setImage($image);
 
         $errors = $validator->validate($new);
         if (count($errors) > 0) {
