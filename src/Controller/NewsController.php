@@ -4,12 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Media;
 use App\Entity\News;
-use App\Service\MediaHelper;
 use Ausi\SlugGenerator\SlugGenerator;
 use DateTime;
 use Exception;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

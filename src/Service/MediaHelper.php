@@ -25,6 +25,7 @@ class MediaHelper
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
         $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+
         $size = $file->getSize();
         $type = $file->getMimeType();
         try {
@@ -32,6 +33,8 @@ class MediaHelper
         } catch (FileException $e) {
             // ... handle exception if something happens during file upload
         }
+        $path = '/uploads/image/'. $fileName;
+        $file_id->setFilePath($path);
         $file_id->setFileName($fileName);
         $file_id->setFileSize($size);
         $file_id->setFileType($type);

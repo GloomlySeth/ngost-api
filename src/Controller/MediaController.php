@@ -25,10 +25,11 @@ class MediaController extends AbstractController
      */
     public function createFile(Request $request, MediaHelper $helper)
     {
-        $file = $request->get('file');
+        $file = $request->files->get('file');
+
         $file = $helper->upload($file);
         return new JsonResponse([
-            'message' => 'add new file',
+            'message' => 'Add new file',
             'id' => $file->getId(),
             'path' => $file->getFilePath()
         ],201);
