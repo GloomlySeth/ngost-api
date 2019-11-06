@@ -80,10 +80,16 @@ class Users implements UserInterface, EquatableInterface
      */
     private $news;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Requirements", mappedBy="user_created", orphanRemoval=true)
+     */
+    private $requirements;
+
     public function __construct()
     {
         $this->pages = new ArrayCollection();
         $this->news = new ArrayCollection();
+        $this->requirements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -300,6 +306,37 @@ class Users implements UserInterface, EquatableInterface
             // set the owning side to null (unless already changed)
             if ($news->getCreatedUser() === $this) {
                 $news->setCreatedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Requirements[]
+     */
+    public function getRequirements(): Collection
+    {
+        return $this->requirements;
+    }
+
+    public function addRequirement(Requirements $requirement): self
+    {
+        if (!$this->requirements->contains($requirement)) {
+            $this->requirements[] = $requirement;
+            $requirement->setUserCreated($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequirement(Requirements $requirement): self
+    {
+        if ($this->requirements->contains($requirement)) {
+            $this->requirements->removeElement($requirement);
+            // set the owning side to null (unless already changed)
+            if ($requirement->getUserCreated() === $this) {
+                $requirement->setUserCreated(null);
             }
         }
 

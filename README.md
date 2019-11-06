@@ -78,7 +78,10 @@
               "image" : Integer id image,
               "short_desc" : String
            }
-   1.6 Create media file
+           
+  2) Media
+  
+   2.1 Create media file
                    
               url: https://api.ngost.by/api/media
                      
@@ -88,9 +91,47 @@
               {
                  "file": File
               }
-   1.7 Show media file
+   2.2 Show media file
                       
-                 url: https://api.ngost.by/api/media/{id}
-                       
-                 method: GET
+               url: https://api.ngost.by/api/media/{id}
+ 
+               method: GET
                  
+  3) Requirements 
+  
+  1.1 Create Requirements
+     
+     url: https://api.ngost.by/api/requirements
+     data type: JSON
+     method: POST
+     data: 
+     {
+        "fields": Array,
+     }
+             
+  1.2 Get all Requirements
+       
+     url: https://api.ngost.by/api/requirements
+     method: GET
+               
+  1.3 Get Requirements by id
+           
+     url: https://api.ngost.by/api/requirements/{id}       
+     method: GET
+                  
+  1.4 DELETE Requirements by id
+              
+     url: https://api.ngost.by/api/requirements/{id}
+     method: DELETE
+                
+               
+  1.5 UPDATE Requirements by id
+                  
+     url: https://api.ngost.by/api/requirements/{id}/edit               
+     data type: JSON
+     method: POST
+     data: 
+     {
+         "fields": Array,
+     }
+             
