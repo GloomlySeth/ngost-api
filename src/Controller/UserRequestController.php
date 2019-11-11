@@ -44,7 +44,8 @@ class UserRequestController extends ApiController
                 'id' => $request->getId(),
                 'created_at' => $request->getCreatedAt(),
                 'file' => null,
-                'requirement' => null
+                'requirement' => null,
+                'status' => $request->getStatus()
             ];
 
             if (!is_null($requirement = $request->getRequirement())) {
@@ -97,7 +98,8 @@ class UserRequestController extends ApiController
             'id' => $requests->getId(),
             'created_at' => $requests->getCreatedAt(),
             'file' => null,
-            'requirement' => null
+            'requirement' => null,
+            'status' => $requests->getStatus()
         ];
 
         if (!is_null($requirement = $requests->getRequirement())) {
@@ -259,6 +261,46 @@ class UserRequestController extends ApiController
 
         return new JsonResponse([
             'message' => 'Delete user request'
+        ]);
+    }
+
+    /**
+     * @Route("/user/requests/status/{id}", methods={"POST"})
+     * @param $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function setStatus($id, Request $request)
+    {
+
+        $userRequest = $this->getDoctrine()->getRepository(UserRequest::class)->find($id);
+
+        $parametersAsArray = [];
+        if ($content = $request->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        if (array_key_exists('status', $parametersAsArray)) {
+            $status = $parametersAsArray['status'];
+        } else {
+            $status = null;
+        }
+
+        if (is_null($userRequest)) {
+            return new JsonResponse([
+                'message' => 'Requests not found'
+            ]);
+        }
+        $userRequest->setStatus($status);
+
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $em->remove($userRequest);
+        $em->flush();
+
+        return new JsonResponse([
+            'message' => 'Status update'
         ]);
     }
 }

@@ -167,8 +167,18 @@
                  "requirement": Int (id requirement),
                  "file": Int (id file)
               }
+                    
+        4.5 Update user request by ID
+                        
+              url: https://api.ngost.by/api/user/requests/status/{id}
+              method: POST
+              data type: JSON
+              data: 
+              {
+                 "status": String
+              }
           
-        4.5 Delete user request by ID
+        4.6 Delete user request by ID
                         
               url: https://api.ngost.by/api/user/requests/{id}
               method: DELETE
