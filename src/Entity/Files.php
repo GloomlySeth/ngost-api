@@ -10,10 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Exception;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RequirementsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\FilesRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Requirements
+class Files
 {
     /**
      * @ORM\Id()
@@ -23,15 +23,30 @@ class Requirements
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="requirements")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $user_created;
+    private $title;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="integer")
      */
-    private $updated_at;
+    private $size;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $path;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="files")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     /**
      * @ORM\Column(type="datetime")
@@ -39,12 +54,12 @@ class Requirements
     private $created_at;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="datetime")
      */
-    private $fields = [];
+    private $updated_at;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserRequest", mappedBy="requirement", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\UserRequest", mappedBy="file", orphanRemoval=true)
      */
     private $userRequests;
 
@@ -53,21 +68,67 @@ class Requirements
         $this->userRequests = new ArrayCollection();
     }
 
-
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserCreated(): ?Users
+    public function getTitle(): ?string
     {
-        return $this->user_created;
+        return $this->title;
     }
 
-    public function setUserCreated(?Users $user_created): self
+    public function setTitle(string $title): self
     {
-        $this->user_created = $user_created;
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size): self
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
@@ -104,18 +165,6 @@ class Requirements
         return $this;
     }
 
-    public function getFields(): ?array
-    {
-        return $this->fields;
-    }
-
-    public function setFields(array $fields): self
-    {
-        $this->fields = $fields;
-
-        return $this;
-    }
-
     /**
      * @return Collection|UserRequest[]
      */
@@ -128,7 +177,7 @@ class Requirements
     {
         if (!$this->userRequests->contains($userRequest)) {
             $this->userRequests[] = $userRequest;
-            $userRequest->setRequirement($this);
+            $userRequest->setFile($this);
         }
 
         return $this;
@@ -139,12 +188,11 @@ class Requirements
         if ($this->userRequests->contains($userRequest)) {
             $this->userRequests->removeElement($userRequest);
             // set the owning side to null (unless already changed)
-            if ($userRequest->getRequirement() === $this) {
-                $userRequest->setRequirement(null);
+            if ($userRequest->getFile() === $this) {
+                $userRequest->setFile(null);
             }
         }
 
         return $this;
     }
-
 }

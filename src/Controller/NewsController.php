@@ -144,7 +144,6 @@ class NewsController extends ApiController
             $title = null;
         }
 
-        //TODO create Media service
         if (array_key_exists('description', $parametersAsArray)) {
             $description = $parametersAsArray['description'];
         } else {

@@ -85,11 +85,23 @@ class Users implements UserInterface, EquatableInterface
      */
     private $requirements;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Files", mappedBy="user", orphanRemoval=true)
+     */
+    private $files;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserRequest", mappedBy="user", orphanRemoval=true)
+     */
+    private $userRequests;
+
     public function __construct()
     {
         $this->pages = new ArrayCollection();
         $this->news = new ArrayCollection();
         $this->requirements = new ArrayCollection();
+        $this->files = new ArrayCollection();
+        $this->userRequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -337,6 +349,68 @@ class Users implements UserInterface, EquatableInterface
             // set the owning side to null (unless already changed)
             if ($requirement->getUserCreated() === $this) {
                 $requirement->setUserCreated(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Files[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(Files $file): self
+    {
+        if (!$this->files->contains($file)) {
+            $this->files[] = $file;
+            $file->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFile(Files $file): self
+    {
+        if ($this->files->contains($file)) {
+            $this->files->removeElement($file);
+            // set the owning side to null (unless already changed)
+            if ($file->getUser() === $this) {
+                $file->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserRequest[]
+     */
+    public function getUserRequests(): Collection
+    {
+        return $this->userRequests;
+    }
+
+    public function addUserRequest(UserRequest $userRequest): self
+    {
+        if (!$this->userRequests->contains($userRequest)) {
+            $this->userRequests[] = $userRequest;
+            $userRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRequest(UserRequest $userRequest): self
+    {
+        if ($this->userRequests->contains($userRequest)) {
+            $this->userRequests->removeElement($userRequest);
+            // set the owning side to null (unless already changed)
+            if ($userRequest->getUser() === $this) {
+                $userRequest->setUser(null);
             }
         }
 
