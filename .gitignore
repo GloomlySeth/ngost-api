@@ -5,6 +5,7 @@
 /.env.*.local
 /public/uploads/
 /var/
+/src/Migrations
 /vendor/
 ###< symfony/framework-bundle ###
 .idea

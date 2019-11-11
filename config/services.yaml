@@ -5,10 +5,12 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
         image_directory: '%kernel.project_dir%/public/uploads/image'
+        file_directory: '%kernel.project_dir%/public/uploads/files'
 services:
     App\Service\MediaHelper:
         arguments:
             $targetDirectory: '%image_directory%'
+            $targetDirectoryFile: '%image_directory%'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

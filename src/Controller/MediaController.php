@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Files;
 use App\Entity\Media;
+use App\Entity\Users;
 use App\Service\MediaHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,7 +43,7 @@ class MediaController extends AbstractController
      * @param $id
      * @return JsonResponse
      */
-    public function getFile($id)
+    public function getFileInfo($id)
     {
         $file = $this->getDoctrine()->getRepository(Media::class)->find($id);
         if (is_null($file)) {
@@ -52,6 +54,49 @@ class MediaController extends AbstractController
         return new JsonResponse([
             'id' => $file->getId(),
             'path' => $file->getFilePath()
+        ],200);
+    }
+
+
+    /**
+     * @Route("/files", methods={"POST"})
+     * @param Request $request
+     * @param MediaHelper $helper
+     * @return JsonResponse
+     */
+    public function create(Request $request, MediaHelper $helper)
+    {
+        $file = $request->files->get('file');
+
+        $user = $this->getDoctrine()->getRepository(Users::class)->find($this->getUser()->getId());
+        $file = $helper->uploadFile($file, $user);
+        return new JsonResponse([
+            'message' => 'Add new file',
+            'id' => $file->getId(),
+            'path' => $file->getPath()
+        ],201);
+    }
+
+    /**
+     * @Route("/files/{id}", methods={"GET"})
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getFile($id)
+    {
+        $file = $this->getDoctrine()->getRepository(Files::class)->find($id);
+        if (is_null($file)) {
+            return new JsonResponse([
+                'message' => 'File not exist'
+            ],200);
+        }
+        return new JsonResponse([
+            'id' => $file->getId(),
+            'path' => $file->getPath(),
+            'size' => $file->getSize(),
+            'title' => $file->getTitle(),
+            'type' => $file->getType(),
+            'created_at' => $file->getCreatedAt()
         ],200);
     }
 }

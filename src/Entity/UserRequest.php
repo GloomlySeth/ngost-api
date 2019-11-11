@@ -43,6 +43,11 @@ class UserRequest
      */
     private $created_at;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $status;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,5 +103,17 @@ class UserRequest
     public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->created_at;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }

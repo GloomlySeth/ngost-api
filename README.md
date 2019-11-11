@@ -172,3 +172,21 @@
                         
               url: https://api.ngost.by/api/user/requests/{id}
               method: DELETE
+              
+   5) Media
+     
+        5.1 Create file
+                          
+               url: https://api.ngost.by/api/files
+                            
+               data type: x-www-form-urlencoded
+               method: POST
+               data: 
+               {
+                    "file": File
+               }
+        5.2 Show file
+                             
+               url: https://api.ngost.by/api/files/{id}
+        
+               method: GET
