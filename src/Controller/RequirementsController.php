@@ -58,7 +58,7 @@ class RequirementsController extends ApiController
             $data[] = $temp;
         }
         return new JsonResponse([
-            'data' => $data
+            'response' => $data
         ]);
     }
 
@@ -74,7 +74,7 @@ class RequirementsController extends ApiController
             $parametersAsArray = json_decode($content, true);
         } else {
             return new JsonResponse([
-                'data' => 'no data for create'
+                'response' => 'no data for create'
             ]);
         }
         if (array_key_exists('fields', $parametersAsArray)) {
@@ -90,7 +90,7 @@ class RequirementsController extends ApiController
         $em->persist($req);
         $em->flush();
         return new JsonResponse([
-            'data' => 'Created requirements'
+            'response' => 'Created requirements'
         ]);
     }
 
@@ -104,7 +104,7 @@ class RequirementsController extends ApiController
         $item = $this->getDoctrine()->getRepository(Requirements::class)->find($id);
         if (is_null($item)) {
             return new JsonResponse([
-                'data' => 'No content'
+                'response' => 'No content'
             ], 203);
         }
         $data = [
@@ -121,7 +121,7 @@ class RequirementsController extends ApiController
             ];
         }
         return new JsonResponse([
-            'data' => $data
+            'response' => $data
         ]);
     }
 
@@ -137,14 +137,14 @@ class RequirementsController extends ApiController
         $req = $this->getDoctrine()->getRepository(Requirements::class)->find($id);
         if (is_null($req)) {
             return new JsonResponse([
-                'data' => 'No content'
+                'response' => 'No content'
             ], 203);
         }
         if ($content = $request->getContent()) {
             $parametersAsArray = json_decode($content, true);
         } else {
             return new JsonResponse([
-                'data' => 'no data for create'
+                'response' => 'no data for create'
             ]);
         }
         if (array_key_exists('fields', $parametersAsArray)) {
@@ -159,7 +159,7 @@ class RequirementsController extends ApiController
         $em->persist($req);
         $em->flush();
         return new JsonResponse([
-            'data' => 'Updated item'
+            'response' => 'Updated item'
         ], 203);
     }
 
@@ -174,13 +174,13 @@ class RequirementsController extends ApiController
         $item = $this->getDoctrine()->getRepository(Requirements::class)->find($id);
         if (is_null($item)) {
             return new JsonResponse([
-                'data' => 'No content'
+                'response' => 'No content'
             ], 203);
         }
         $em->remove($item);
         $em->flush();
         return new JsonResponse([
-            'data' => 'Deleted item'
+            'response' => 'Deleted item'
         ], 200);
     }
 }

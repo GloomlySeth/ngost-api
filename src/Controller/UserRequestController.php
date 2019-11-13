@@ -71,7 +71,7 @@ class UserRequestController extends ApiController
             $data[] = $item;
         }
         return new JsonResponse([
-            'data' => $data
+            'response' => $data
         ]);
     }
 
@@ -123,7 +123,7 @@ class UserRequestController extends ApiController
 
 
         return new JsonResponse([
-            'data' => $item
+            'response' => $item
         ]);
     }
 

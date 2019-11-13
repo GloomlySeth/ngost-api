@@ -59,7 +59,7 @@ class NewsController extends ApiController
             }
         }
         return new JsonResponse([
-            'data' => $data
+            'response' => $data
         ]);
     }
 
@@ -96,7 +96,7 @@ class NewsController extends ApiController
             ];
         }
         return new JsonResponse([
-            'data' => $data
+            'response' => $data
         ]);
     }
 
