@@ -3,6 +3,7 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+.env
 /public/uploads/
 /var/
 /src/Migrations
