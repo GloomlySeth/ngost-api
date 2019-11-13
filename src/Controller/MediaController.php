@@ -48,7 +48,7 @@ class MediaController extends AbstractController
         $file = $this->getDoctrine()->getRepository(Media::class)->find($id);
         if (is_null($file)) {
             return new JsonResponse([
-                'message' => 'File not exist'
+                'message' => 'File exist'
             ],200);
         }
         return new JsonResponse([
