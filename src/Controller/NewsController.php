@@ -150,8 +150,8 @@ class NewsController extends ApiController
             $description = null;
         }
 
-        if (array_key_exists('shortDesc', $parametersAsArray)) {
-            $shortDesc = $parametersAsArray['shortDesc'];
+        if (array_key_exists('short_desc', $parametersAsArray)) {
+            $shortDesc = $parametersAsArray['short_desc'];
         } else {
             $shortDesc = null;
         }
@@ -231,8 +231,8 @@ class NewsController extends ApiController
             $description = null;
         }
 
-        if (array_key_exists('shortDesc', $parametersAsArray)) {
-            $shortDesc = $parametersAsArray['shortDesc'];
+        if (array_key_exists('short_desc', $parametersAsArray)) {
+            $shortDesc = $parametersAsArray['short_desc'];
         } else {
             $shortDesc = null;
         }
