@@ -34,7 +34,7 @@ class NewsController extends ApiController
             );
         $data = [];
         foreach ($news as $new) {
-            $data[] = [
+            $item = [
                 'id' => $new->getId(),
                 'title' => $new->getTitle(),
                 'description' => $new->getDescription(),
@@ -44,19 +44,20 @@ class NewsController extends ApiController
                 'created_user' => null
             ];
             if(!is_null($user = $new->getCreatedUser())) {
-                $data['created_user'] = [
+                $item['created_user'] = [
                     'id' => $user->getId(),
                     'username' => $user->getUsername()
                 ];
             }
             if(!is_null($image = $new->getImage())) {
-                $data['image'] = [
+                $item['image'] = [
                     'id' => $image->getId(),
                     'file_path' => $image->getFilePath(),
                     'file_name' => $image->getFileName(),
                     'file_type' => $image->getFileType()
                 ];
             }
+            $data[]= $item;
         }
         return new JsonResponse([
             'response' => $data
