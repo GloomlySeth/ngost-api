@@ -28,7 +28,7 @@ class News
     private $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="array")
      * @Assert\NotNull(message="Контент не может быть пустым")
      */
     private $description;
@@ -85,18 +85,6 @@ class News
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
 
         return $this;
     }
@@ -191,5 +179,21 @@ class News
         $this->image = $image;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
     }
 }
