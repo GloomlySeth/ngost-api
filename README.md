@@ -25,6 +25,12 @@
             "phone": String "+375297555555"
          }
          
+ **Все гет запросы могут иметь пагинацию, данные отправлять гет параметрами**
+         
+       sort_field = cteated_at
+       limit = 15
+       offset = 1
+         
  **Ко всем остальным запросам крепить заголовок** 
     
      header: 
@@ -95,6 +101,12 @@
                           
                    url: https://api.ngost.by/api/media/{id}
      
+                   method: GET
+                   
+       2.2 Show media files
+                                 
+                   url: https://api.ngost.by/api/media
+            
                    method: GET
                      
    3) Requirements 
