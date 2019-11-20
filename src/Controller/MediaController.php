@@ -18,8 +18,41 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/api")
  */
 
-class MediaController extends AbstractController
+class MediaController extends ApiController
 {
+
+
+    /**
+     * @Route("/media", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAllMedia (Request $request) {
+        $media = $this->getDoctrine()->getRepository(Media::class)->findBy(
+            ['deleted_at' => null],
+            $this->sorting($request),
+            $this->getLimit($request),
+            $this->getOffset($request)
+        );
+
+        if (is_null($media)) {
+            return new JsonResponse([
+                'message' => 'No data'
+            ]);
+        }
+        $data = [];
+        foreach ($media as $file) {
+            $data[] = [
+                'id' => $file->getId(),
+                'path' => $file->getFilePath()
+            ];
+        }
+
+        return new JsonResponse([
+            'response' => $data
+        ]);
+    }
+
     /**
      * @Route("/media", methods={"POST"})
      * @param Request $request
