@@ -72,8 +72,7 @@ class NewsController extends ApiController
     public function showNews($id)
     {
         $new = $this->getDoctrine()->getRepository(News::class)->find($id);
-        $data = [];
-        $data[] = [
+        $data = [
             'id' => $new->getId(),
             'title' => $new->getTitle(),
             'description' => $new->getDescription(),
