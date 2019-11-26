@@ -22,12 +22,12 @@ class UserController extends AbstractController
     public function index()
     {
         $user = $this->getUser();
-        $response = [
-            "role" => $user->getRoles(),
-            "username" => $user->getUsername()
-        ];
+//        $response = [
+//            "role" => $user->getRoles(),
+//            "username" => $user->getUsername()
+//        ];
         return new JsonResponse([
-            "user" => $response
+            "user" => $this->getUser()
         ], 200);
     }
 
