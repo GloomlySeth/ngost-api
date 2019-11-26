@@ -60,7 +60,8 @@ class NewsController extends ApiController
             $data[]= $item;
         }
         return new JsonResponse([
-            'response' => $data
+            'response' => $data,
+            'total' => $this->getDoctrine()->getRepository(News::class)->total()
         ]);
     }
 

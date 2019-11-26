@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Device;
 use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * @method News|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +51,24 @@ class NewsRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @return int|mixed
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function total()
+    {
+        $builder = $this->_em->createQueryBuilder();
+        $builder
+            ->select('COUNT(n.id)')
+            ->from(News::class, 'n')
+            ->where('n.deleted_at is NULL')
+        ;
+        try {
+            return $builder->getQuery()->getSingleScalarResult();
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
 }
