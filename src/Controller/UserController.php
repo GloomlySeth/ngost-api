@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Users;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +13,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * Class UserController
  * @package App\Controller
  * @Route("/api")
- * @IsGranted({"ROLE_USER"})
  */
 class UserController extends AbstractController
 {
