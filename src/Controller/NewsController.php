@@ -6,6 +6,8 @@ use App\Entity\Media;
 use App\Entity\News;
 use Ausi\SlugGenerator\SlugGenerator;
 use DateTime;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +25,8 @@ class NewsController extends ApiController
      * @Route("/news", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function index(Request $request)
     {
