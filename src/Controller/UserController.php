@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * Class UserController
  * @package App\Controller
  * @Route("/api")
- * @IsGranted("ROLE_USER")
+ * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
 class UserController extends AbstractController
 {
