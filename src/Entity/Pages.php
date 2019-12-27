@@ -28,7 +28,7 @@ class Pages
     private $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="array")
      * @Assert\NotNull(message="Контент не может быть пустым")
      */
     private $content;

@@ -266,7 +266,7 @@ class NewsController extends ApiController
         $em->persist($new);
         $em->flush();
         return new JsonResponse([
-            'message' => 'add new',
+            'message' => 'edit new',
             'id' => $new->getSlug()
         ]);
     }

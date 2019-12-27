@@ -37,7 +37,7 @@
       {
         Authorization: "Bearer " + token
       }
-  1) News
+   1) News
    
        1.1 Create news
        
@@ -212,3 +212,53 @@
                url: https://api.ngost.by/api/files/{id}
         
                method: GET
+             
+   6) Pages
+      
+          1.1 Create pages
+          
+                 url: https://api.ngost.by/api/pages
+             
+                 data type: JSON
+                 method: POST
+                 data: 
+                  {
+                     "title": String,
+                     "name": String,
+                     "header": String,
+                     "content": Array,
+                     "status": String
+                  }
+                  
+          1.2 Get all pages
+             
+                  url: https://api.ngost.by/api/pages
+                  security: false
+                  method: GET
+                    
+          1.3 Get page by slug
+                
+                  url: https://api.ngost.by/api/pages/{id}
+                  
+                  method: GET
+                       
+          1.4 DELETE page by id
+                   
+                  url: https://api.ngost.by/api/pages/{id}
+                     
+                  method: DELETE
+                    
+          1.5 UPDATE pages by id
+                       
+                  url: https://api.ngost.by/api/pages/{id}/edit
+                         
+                  data type: JSON
+                  method: POST
+                  data: 
+                  {
+                     "title": String,
+                     "name": String,
+                     "header": String,
+                     "content": Array,
+                     "status": String
+                  }
