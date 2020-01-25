@@ -66,7 +66,7 @@ class AuthController extends AbstractController
         $em->flush();
 
         return new JsonResponse([
-            'message' => 'Добавлен новый пользователь',
+            'message' => 'Регистрация прошла успешно',
             'id' => $user->getId()
         ], 201);
     }
