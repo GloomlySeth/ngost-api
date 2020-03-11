@@ -95,6 +95,36 @@ class Users implements UserInterface, EquatableInterface
      */
     private $userRequests;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media")
+     */
+    private $avatar;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $mailing;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $alerts;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $company;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Place", inversedBy="users")
+     */
+    private $place;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Contact", inversedBy="users")
+     */
+    private $contact;
+
     public function __construct()
     {
         $this->pages = new ArrayCollection();
@@ -413,6 +443,78 @@ class Users implements UserInterface, EquatableInterface
                 $userRequest->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?Media
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Media $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getMailing(): ?bool
+    {
+        return $this->mailing;
+    }
+
+    public function setMailing(bool $mailing): self
+    {
+        $this->mailing = $mailing;
+
+        return $this;
+    }
+
+    public function getAlerts(): ?bool
+    {
+        return $this->alerts;
+    }
+
+    public function setAlerts(bool $alerts): self
+    {
+        $this->alerts = $alerts;
+
+        return $this;
+    }
+
+    public function getCompany(): ?bool
+    {
+        return $this->company;
+    }
+
+    public function setCompany(bool $company): self
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    public function getPlace(): ?Place
+    {
+        return $this->place;
+    }
+
+    public function setPlace(?Place $place): self
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?Contact $contact): self
+    {
+        $this->contact = $contact;
 
         return $this;
     }
