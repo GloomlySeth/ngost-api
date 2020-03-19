@@ -34,9 +34,9 @@ security:
                     - lexik_jwt_authentication.jwt_token_authenticator
 
     access_control:
-        - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY,requires_channel: https }
-        - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY , methods: [POST],requires_channel: https}
-        - { path: ^/api/news, roles: IS_AUTHENTICATED_ANONYMOUSLY,  methods: [GET],requires_channel: https}
-        - { path: ^/api/media, roles: IS_AUTHENTICATED_ANONYMOUSLY,  methods: [GET],requires_channel: https}
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY,requires_channel: https }
+        - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY , methods: [POST]}
+        - { path: ^/api/news, roles: IS_AUTHENTICATED_ANONYMOUSLY,  methods: [GET]}
+        - { path: ^/api/media, roles: IS_AUTHENTICATED_ANONYMOUSLY,  methods: [GET]}
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY}
 

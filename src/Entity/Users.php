@@ -116,14 +116,14 @@ class Users implements UserInterface, EquatableInterface
     private $company;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Place", inversedBy="users")
+     * @ORM\OneToMany(targetEntity="App\Entity\Place", mappedBy="user")
      */
-    private $place;
+    private $places;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Contact", inversedBy="users")
+     * @ORM\OneToMany(targetEntity="App\Entity\Contact", mappedBy="user")
      */
-    private $contact;
+    private $contacts;
 
     public function __construct()
     {
@@ -132,6 +132,8 @@ class Users implements UserInterface, EquatableInterface
         $this->requirements = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->userRequests = new ArrayCollection();
+        $this->places = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -495,27 +497,67 @@ class Users implements UserInterface, EquatableInterface
         return $this;
     }
 
-    public function getPlace(): ?Place
+    /**
+     * @return Collection|Place[]
+     */
+    public function getPlaces(): Collection
     {
-        return $this->place;
+        return $this->places;
     }
 
-    public function setPlace(?Place $place): self
+    public function addPlace(Place $place): self
     {
-        $this->place = $place;
+        if (!$this->places->contains($place)) {
+            $this->places[] = $place;
+            $place->setUser($this);
+        }
 
         return $this;
     }
 
-    public function getContact(): ?Contact
+    public function removePlace(Place $place): self
     {
-        return $this->contact;
-    }
-
-    public function setContact(?Contact $contact): self
-    {
-        $this->contact = $contact;
+        if ($this->places->contains($place)) {
+            $this->places->removeElement($place);
+            // set the owning side to null (unless already changed)
+            if ($place->getUser() === $this) {
+                $place->setUser(null);
+            }
+        }
 
         return $this;
     }
+
+    /**
+     * @return Collection|Contact[]
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+            $contact->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contacts->contains($contact)) {
+            $this->contacts->removeElement($contact);
+            // set the owning side to null (unless already changed)
+            if ($contact->getUser() === $this) {
+                $contact->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

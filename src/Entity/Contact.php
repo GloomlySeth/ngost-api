@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -89,14 +87,9 @@ class Contact
     private $full_title;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Users", mappedBy="contact")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="contacts")
      */
-    private $users;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
+    private $user;
 
     public function getId(): ?int
     {
@@ -271,33 +264,14 @@ class Contact
         return $this;
     }
 
-    /**
-     * @return Collection|Users[]
-     */
-    public function getUsers(): Collection
+    public function getUser(): ?Users
     {
-        return $this->users;
+        return $this->user;
     }
 
-    public function addUser(Users $user): self
+    public function setUser(?Users $user): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setContact($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(Users $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getContact() === $this) {
-                $user->setContact(null);
-            }
-        }
+        $this->user = $user;
 
         return $this;
     }

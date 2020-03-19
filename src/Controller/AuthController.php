@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
+use App\Entity\Place;
 use App\Entity\Users;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,7 +54,45 @@ class AuthController extends AbstractController
         if (!is_null($this->password)){
             $user->setPassword($encoder->encodePassword($user, $this->password));
         }
+        $type = $parametersAsArray['type'] == 2 ? true : false;
+        $org = null;
+        if ($type) {
+            $org = $parametersAsArray['org'];
+        }
+        $item = new Users();
+        $item->setCompany($type);
+        if (!is_null($org)) {
+            foreach ($org['place'] as $place) {
+                $places = new Place();
+                $places->setAddress($place['address']);
+                $places->setCity($place['city']);
+                $places->setCountry($place['country']);
+                $places->setType($place['type']);
+                $places->setPostcode($place['postcode']);
+                $places->setUser($item);
+                $em->persist($places);
+            }
+            $contact = new Contact();
+            $contact->setFullTitle($org['full_title']);
+            $contact->setAbbreviation($org['abbreviation']);
 
+            $contact->setFullName($org['leadership']['full_name']);
+            $contact->setBase($org['leadership']['base']);
+            $contact->setPosition($org['leadership']['position']);
+
+            $contact->setEmail($org['contact']['email']);
+            $contact->setPhone($org['contact']['phone']);
+            $contact->setFax($org['contact']['fax']);
+
+            $contact->setAddress($org['bank']['address']);
+            $contact->setKod($org['bank']['kod']);
+            $contact->setBank($org['bank']['bank']);
+            $contact->setPayment($org['bank']['payment']);
+            $contact->setOkpo($org['bank']['okpo']);
+            $contact->setUnn($org['bank']['unn']);
+            $contact->setUser($item);
+            $em->persist($contact);
+        }
         $errors = $validator->validate($user);
         if (count($errors) > 0) {
 
