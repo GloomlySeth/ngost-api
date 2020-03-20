@@ -58,9 +58,23 @@ class AuthController extends AbstractController
         $org = null;
         if ($type) {
             $org = $parametersAsArray['org'];
+            $user->setRoles(['ROLE_USER', 'ROLE_COMPANY']);
         }
-        $item = new Users();
-        $item->setCompany($type);
+        $user->setCompany($type);
+        $user->setMailing($parametersAsArray['mailing']);
+        $user->setAlerts($parametersAsArray['alerts']);
+
+        $errors = $validator->validate($user);
+        if (count($errors) > 0) {
+
+            $errorsString = [];
+            foreach ($errors as $error) {
+                $errorsString[$error->getPropertyPath()] = $error->getMessage();
+            }
+            return new JsonResponse($errorsString, 203);
+        }
+        $em->persist($user);
+        $em->flush();
         if (!is_null($org)) {
             foreach ($org['place'] as $place) {
                 $places = new Place();
@@ -69,7 +83,7 @@ class AuthController extends AbstractController
                 $places->setCountry($place['country']);
                 $places->setType($place['type']);
                 $places->setPostcode($place['postcode']);
-                $places->setUser($item);
+                $places->setUser($user);
                 $em->persist($places);
             }
             $contact = new Contact();
@@ -90,19 +104,9 @@ class AuthController extends AbstractController
             $contact->setPayment($org['bank']['payment']);
             $contact->setOkpo($org['bank']['okpo']);
             $contact->setUnn($org['bank']['unn']);
-            $contact->setUser($item);
+            $contact->setUser($user);
             $em->persist($contact);
         }
-        $errors = $validator->validate($user);
-        if (count($errors) > 0) {
-
-            $errorsString = [];
-            foreach ($errors as $error) {
-                $errorsString[$error->getPropertyPath()] = $error->getMessage();
-            }
-            return new JsonResponse($errorsString, 203);
-        }
-        $em->persist($user);
         $em->flush();
 
         return new JsonResponse([

@@ -43,6 +43,7 @@ class Place
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="places")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
