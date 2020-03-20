@@ -40,6 +40,11 @@ class RequirementsController extends ApiController
         }
 
         $data = [];
+        if (!is_null($items)) {
+            return new JsonResponse([
+                'message' => 'Нет текущих запросов'
+            ]);
+        }
 
         foreach ($items as $item) {
             $temp = [
