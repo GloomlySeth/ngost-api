@@ -71,6 +71,7 @@ class UserController extends AbstractController
 
         } else {
             $response['org'] = [
+                'contact_id' => null,
                 'abbreviation' => null,
                 'full_title' => null,
                 'leadership' => [
@@ -107,6 +108,7 @@ class UserController extends AbstractController
         } else {
             array_push($response['org']['place'], [
                 'type' => 1,
+                'id' => null,
                 'address' => null,
                 'postcode' => null,
                 'city' => null,
@@ -114,6 +116,7 @@ class UserController extends AbstractController
             ]);
             array_push($response['org']['place'], [
                 'type' => 2,
+                'id' => null,
                 'address' => null,
                 'postcode' => null,
                 'city' => null,
@@ -248,6 +251,9 @@ class UserController extends AbstractController
         if (!is_null($org)) {
             foreach ($org['place'] as $place) {
                 $places = $this->getDoctrine()->getRepository(Place::class)->find($place['id']);
+                if (is_null($places)) {
+                    $places = new Place();
+                }
                 $places->setAddress($place['address']);
                 $places->setCity($place['city']);
                 $places->setCountry($place['country']);
@@ -257,6 +263,9 @@ class UserController extends AbstractController
                 $em->persist($places);
             }
             $contact = $this->getDoctrine()->getRepository(Contact::class)->find($org['contact_id']);
+            if (is_null($contact)) {
+                $contact = new Contact();
+            }
             $contact->setFullTitle($org['full_title']);
             $contact->setAbbreviation($org['abbreviation']);
 
