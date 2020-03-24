@@ -23,20 +23,22 @@ class RequirementsController extends ApiController
     public function index(Request $request)
     {
         if ($this->isGranted('ROLE_ADMIN')) {
-            $items = $this->getDoctrine()->getRepository(Requirements::class)->findBy([
+            $items = $this->getDoctrine()->getRepository(Requirements::class)->findBy(
                 ["deleted_at" => null],
                 $this->sorting($request),
                 $this->getLimit($request),
                 $this->getOffset($request)
-            ]);
+            );
         } else {
-            $items = $this->getDoctrine()->getRepository(Requirements::class)->findBy([
-                "user_created" => $this->getUser()->getId(),
-                ["deleted_at" => null],
+            $items = $this->getDoctrine()->getRepository(Requirements::class)->findBy(
+                [
+                    "user_created" => $this->getUser()->getId(),
+                    "deleted_at" => null
+                ],
                 $this->sorting($request),
                 $this->getLimit($request),
                 $this->getOffset($request)
-            ]);
+            );
         }
 
         $data = [];
