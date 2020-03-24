@@ -30,10 +30,10 @@ class RequirementsController extends ApiController
             ]);
         } else {
             $items = $this->getDoctrine()->getRepository(Requirements::class)->findBy([
-//                "user_created" => $this->getUser()->getId(),
-                $this->sorting($request),
-                $this->getLimit($request),
-                $this->getOffset($request)
+                "user_created" => $this->getUser()->getId(),
+//                $this->sorting($request),
+//                $this->getLimit($request),
+//                $this->getOffset($request)
             ]);
         }
 
