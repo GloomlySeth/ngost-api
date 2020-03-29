@@ -34,7 +34,7 @@ class PagesController extends ApiController
             );
         $data = [];
         foreach ($pages as $page) {
-            $data[] = [
+            $response = [
                 'id' => $page->getId(),
                 'title' => $page->getTitle(),
                 'name' => $page->getName(),
@@ -44,11 +44,12 @@ class PagesController extends ApiController
                 'user_updated' => null
             ];
             if(!is_null($user = $page->getUserUpdated())) {
-                $data['user_updated'] = [
+                $response['user_updated'] = [
                     'id' => $user->getId(),
                     'username' => $user->getUsername()
                 ];
             }
+            $data[] = $response;
         }
         return new JsonResponse([
             'response' => $data
