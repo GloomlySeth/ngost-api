@@ -71,27 +71,27 @@ class Users implements UserInterface, EquatableInterface
     private $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Pages", mappedBy="user_updated")
+     * @ORM\OneToMany(targetEntity="App\Entity\Pages", mappedBy="user_updated", cascade={"remove"})
      */
     private $pages;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\News", mappedBy="created_user")
+     * @ORM\OneToMany(targetEntity="App\Entity\News", mappedBy="created_user", cascade={"remove"})
      */
     private $news;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Requirements", mappedBy="user_created", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Requirements", mappedBy="user_created", cascade={"remove"})
      */
     private $requirements;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Files", mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Files", mappedBy="user", cascade={"remove"})
      */
     private $files;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserRequest", mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\UserRequest", mappedBy="user", cascade={"remove"})
      */
     private $userRequests;
 
@@ -116,12 +116,12 @@ class Users implements UserInterface, EquatableInterface
     private $company;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Place", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Place", mappedBy="user", cascade={"remove"})
      */
     private $places;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Contact", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Contact", mappedBy="user", cascade={"remove"})
      */
     private $contacts;
 

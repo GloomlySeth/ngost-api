@@ -461,29 +461,6 @@ class UserController extends AbstractController
      */
     public function delete ($id) {
         $user = $this->getDoctrine()->getRepository(Users::class)->find($id);
-        foreach ($user->getContacts() as $item) {
-            $user->removeContact($item);
-        }
-        foreach ($user->getPlaces() as $place) {
-            $user->removePlace($place);
-        }
-        foreach ($user->getFiles() as $file) {
-            $user->removeFile($file);
-        }
-        foreach ($user->getUserRequests() as $userRequest) {
-            $user->removeUserRequest($userRequest);
-        }
-
-        foreach ($user->getPages() as $page) {
-            $user->removePage($page);
-        }
-
-        foreach ($user->getNews() as $news) {
-            $user->removeNews($news);
-        }
-        foreach ($user->getRequirements() as $requirement) {
-            $user->removeRequirement($requirement);
-        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
