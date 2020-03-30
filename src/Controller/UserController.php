@@ -135,13 +135,102 @@ class UserController extends AbstractController
     {
         $data = $this->getDoctrine()->getRepository(Users::class)->findAll();
         $result = [];
-        foreach ($data as $item) {
+        foreach ($data as $user) {
             $response = [
-                "id" => $item->getId(),
-                "username" => $item->getUsername(),
-                "branch" => null,
-                "roles" => $item->getRoles()
+                "id" => $user->getId(),
+                "password" => null,
+                "role" => $user->getRoles(),
+                "username" => $user->getUsername(),
+                "email" => $user->getEmail(),
+                "phone" => $user->getPhone(),
+                "mailing" => $user->getMailing(),
+                "alerts" => $user->getAlerts(),
+                "org" => null,
+                "type" => $user->getCompany(),
             ];
+            if ($user->getContacts()) {
+                $contacts = $user->getContacts();
+                foreach ($contacts as $contact) {
+                    $response['org'] = [
+                        'contact_id' => $contact->getId(),
+                        'abbreviation' => $contact->getAbbreviation(),
+                        'full_title' => $contact->getFullTitle(),
+                        'place' => [],
+                        'leadership' => [
+                            'full_name' => $contact->getFullName(),
+                            'base' => $contact->getBase(),
+                            'position' => $contact->getPosition(),
+                        ],
+                        'contact' => [
+                            'email' => $contact->getEmail(),
+                            'phone' => $contact->getPhone(),
+                            'fax' => $contact->getFax(),
+                        ],
+                        'bank' => [
+                            'address' => $contact->getAddress(),
+                            'kod' => $contact->getKod(),
+                            'bank' => $contact->getBank(),
+                            'payment' => $contact->getPayment(),
+                            'okpo' => $contact->getOkpo(),
+                            'unn' => $contact->getUnn(),
+                        ],
+                    ] ;
+                }
+
+            } else {
+                $response['org'] = [
+                    'contact_id' => null,
+                    'abbreviation' => null,
+                    'full_title' => null,
+                    'leadership' => [
+                        'full_name' => null,
+                        'base' => null,
+                        'position' => null,
+                    ],
+                    'contact' => [
+                        'email' => null,
+                        'phone' => null,
+                        'fax' => null,
+                    ],
+                    'bank' => [
+                        'address' => null,
+                        'kod' => null,
+                        'bank' => null,
+                        'payment' => null,
+                        'okpo' => null,
+                        'unn' => null,
+                    ],
+                ] ;
+            }
+            if ($places = $user->getPlaces()) {
+                foreach ($places as $place) {
+                    array_push($response['org']['place'], [
+                        'id' => $place->getId(),
+                        'type' => $place->getType(),
+                        'address' => $place->getAddress(),
+                        'postcode' => $place->getPostcode(),
+                        'city' => $place->getCity(),
+                        'country' => $place->getCountry(),
+                    ]);
+                }
+            } else {
+                array_push($response['org']['place'], [
+                    'type' => 1,
+                    'id' => null,
+                    'address' => null,
+                    'postcode' => null,
+                    'city' => null,
+                    'country' => null,
+                ]);
+                array_push($response['org']['place'], [
+                    'type' => 2,
+                    'id' => null,
+                    'address' => null,
+                    'postcode' => null,
+                    'city' => null,
+                    'country' => null,
+                ]);
+            }
             $result[] = $response;
         }
         return new JsonResponse([
