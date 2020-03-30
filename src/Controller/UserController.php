@@ -453,4 +453,17 @@ class UserController extends AbstractController
 
         return new JsonResponse($parametersAsArray);
     }
+
+    /**
+     * @Route("/users/{id}", methods={"DELETE"})
+     * @param $id
+     * @return JsonResponse
+     */
+    public function delete ($id) {
+        $user = $this->getDoctrine()->getRepository(Users::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+        return new JsonResponse(["message" => "Delete user ". $user->getUsername()], 200);
+    }
 }
