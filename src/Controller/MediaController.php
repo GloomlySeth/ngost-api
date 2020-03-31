@@ -7,6 +7,7 @@ use App\Entity\Media;
 use App\Entity\Users;
 use App\Service\MediaHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -146,6 +147,7 @@ class MediaController extends ApiController
                 'message' => 'File not exist'
             ],200);
         }
+        $this->removeFile($file->getPath());
         $em = $this->getDoctrine()->getManager();
         $em->remove($file);
         $em->flush();
@@ -189,5 +191,13 @@ class MediaController extends ApiController
                 ['user' => $this->getUser()]
             )
         ],200);
+    }
+
+    /**
+     * @param $file
+     */
+    public function removeFile($file) {
+        $filesystem = new Filesystem();
+        $filesystem->remove([$file]);
     }
 }
