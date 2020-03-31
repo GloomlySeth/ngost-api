@@ -198,6 +198,6 @@ class MediaController extends ApiController
      */
     public function removeFile($file) {
         $filesystem = new Filesystem();
-        $filesystem->remove([$this->get('kernel')->getProjectDir(). '/public'. $file]);
+        $filesystem->remove([$this->getParameter('kernel.project_dir'). '/public'. $file]);
     }
 }
