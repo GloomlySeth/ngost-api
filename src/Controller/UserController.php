@@ -370,5 +370,6 @@ class UserController extends AbstractController
                 'country' => null,
             ]);
         }
+        return $response;
     }
 }
