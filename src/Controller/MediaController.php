@@ -142,7 +142,7 @@ class MediaController extends ApiController
     {
         $response = [];
         $files = $this->getDoctrine()->getRepository(Files::class)->findBy(
-            ['deleted_at' => null, 'user' => $this->getUser()],
+            ['user' => $this->getUser()],
             $this->sorting($request),
             $this->getLimit($request),
             $this->getOffset($request)
