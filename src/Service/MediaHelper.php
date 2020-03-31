@@ -66,6 +66,7 @@ class MediaHelper
         $file_id->setPath($path);
         $file_id->setTitle($fileName);
         $file_id->setSize($size);
+        $file_id->setUser($user);
         $file_id->setType($type);
         $em->persist($file_id);
         $em->flush();
