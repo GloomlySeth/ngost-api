@@ -40,7 +40,7 @@ class ApiController extends AbstractController
      */
     public function downloadAction($user, $name)
     {
-        $path ="/image/uploads/files/".$user."/";
+        $path ="/uploads/files/".$user."/";
         $file = $path.$name; // Path to the file on the server
         $response = new BinaryFileResponse($file);
 
