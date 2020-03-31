@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
@@ -27,6 +30,24 @@ class ApiController extends AbstractController
     public function getOffset (Request $request) {
         $offset = $request->get('offset')?$request->get('offset'):self::OFFSET;
         return $offset;
+    }
+
+    /**
+     * @Route("/uploads/file/{user}/{name}")
+     * @param $user
+     * @param $name
+     * @return BinaryFileResponse
+     */
+    public function downloadAction($user, $name)
+    {
+        $path ="/uploads/files/".$user."/";
+        $file = $path.$name; // Path to the file on the server
+        $response = new BinaryFileResponse($file);
+
+        // Give the file a name:
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT,$name);
+
+        return $response;
     }
 
 }
