@@ -33,7 +33,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/uploads/file/{user}/{name}")
+     * @Route("/uploads/files/{user}/{name}")
      * @param $user
      * @param $name
      * @return BinaryFileResponse
