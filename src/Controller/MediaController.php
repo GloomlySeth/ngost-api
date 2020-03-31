@@ -134,6 +134,27 @@ class MediaController extends ApiController
     }
 
     /**
+     * @Route("/files/{id}", methods={"DELETE"})
+     * @param $id
+     * @return JsonResponse
+     */
+    public function deleteFile($id)
+    {
+        $file = $this->getDoctrine()->getRepository(Files::class)->find($id);
+        if (is_null($file)) {
+            return new JsonResponse([
+                'message' => 'File not exist'
+            ],200);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($file);
+        $em->flush();
+        return new JsonResponse([
+            'message' => 'Файл удален'
+        ],200);
+    }
+
+    /**
      * @Route("/files", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
