@@ -132,4 +132,38 @@ class MediaController extends ApiController
             'created_at' => $file->getCreatedAt()
         ],200);
     }
+
+    /**
+     * @Route("/files", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getFiles(Request $request)
+    {
+        $response = [];
+        $files = $this->getDoctrine()->getRepository(Files::class)->findBy(
+            ['deleted_at' => null, 'user' => $this->getUser()],
+            $this->sorting($request),
+            $this->getLimit($request),
+            $this->getOffset($request)
+        );
+        if (is_null($files)) {
+            return new JsonResponse([
+                'message' => 'File not exist'
+            ],200);
+        }
+        foreach ($files as $file) {
+            $response[] = [
+                'id' => $file->getId(),
+                'path' => $file->getPath(),
+                'size' => $file->getSize(),
+                'title' => $file->getTitle(),
+                'type' => $file->getType(),
+                'created_at' => $file->getCreatedAt()
+            ];
+        }
+        return new JsonResponse([
+            'response' => $response
+        ],200);
+    }
 }
