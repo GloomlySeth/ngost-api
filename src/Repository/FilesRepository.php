@@ -3,8 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Files;
+use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\QueryException;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * @method Files|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,6 +24,31 @@ class FilesRepository extends ServiceEntityRepository
         parent::__construct($registry, Files::class);
     }
 
+    public function total (array $criteria) {
+        $builder = $this->_em->createQueryBuilder();
+        $builder
+            ->select('COUNT(f.id)')
+            ->from(Files::class, 'f')
+        ;
+        if ($criteria) {
+            foreach ($criteria as $criterion) {
+                try {
+                    $builder->addCriteria($criterion);
+                } catch (QueryException $e) {
+                    return 0;
+                }
+            }
+        }
+        try {
+            return $builder->getQuery()->getSingleScalarResult();
+        } catch (Exception $e) {
+            return 0;
+        } catch (NoResultException $e) {
+            return 0;
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
+    }
     // /**
     //  * @return Files[] Returns an array of Files objects
     //  */

@@ -163,7 +163,10 @@ class MediaController extends ApiController
             ];
         }
         return new JsonResponse([
-            'response' => $response
+            'response' => $response,
+            'total' => $this->getDoctrine()->getRepository(Files::class)->total(
+                ['user' => $this->getUser()]
+            )
         ],200);
     }
 }
