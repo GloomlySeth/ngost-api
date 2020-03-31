@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Files;
 use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -31,9 +32,10 @@ class FilesRepository extends ServiceEntityRepository
             ->from(Files::class, 'f')
         ;
         if ($criteria) {
-            foreach ($criteria as $criterion) {
+            $criteria = Criteria::create();
+            foreach ($criteria as $criterion => $key) {
                 try {
-                    $builder->addCriteria($criterion);
+                    $criteria->andWhere(Criteria::expr()->eq($key, $criterion));
                 } catch (QueryException $e) {
                     return 0;
                 }
