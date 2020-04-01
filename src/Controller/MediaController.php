@@ -182,7 +182,7 @@ class MediaController extends ApiController
                 'size' => $file->getSize(),
                 'title' => $file->getTitle(),
                 'type' => $file->getType(),
-                'created_at' => $file->getCreatedAt(),
+                'updated_at' => $file->getUpdatedAt(),
                 'request' => null
             ];
             if (!is_null($userRequest = $file->getRequest())) {
