@@ -176,14 +176,24 @@ class MediaController extends ApiController
             ],200);
         }
         foreach ($files as $file) {
-            $response[] = [
+            $data = [
                 'id' => $file->getId(),
                 'path' => $file->getPath(),
                 'size' => $file->getSize(),
                 'title' => $file->getTitle(),
                 'type' => $file->getType(),
-                'created_at' => $file->getCreatedAt()
+                'created_at' => $file->getCreatedAt(),
+                'request' => null
             ];
+            if (!is_null($userRequest = $file->getRequest())) {
+                $data['request'] = [
+                    'id' => $userRequest->getId(),
+                    'status' => $userRequest->getStatus(),
+                    'requirement' => $userRequest->getRequirement()->getTitle(),
+                    'created' => $userRequest->getCreatedAt()
+                ];
+            }
+            $response[] = $data;
         }
         return new JsonResponse([
             'response' => $response,
