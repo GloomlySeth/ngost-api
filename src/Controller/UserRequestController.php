@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Files;
+use App\Entity\Requirements;
 use App\Entity\UserRequest;
 use App\Entity\Users;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,7 +45,6 @@ class UserRequestController extends ApiController
             $item = [
                 'id' => $request->getId(),
                 'created_at' => $request->getCreatedAt(),
-                'file' => null,
                 'requirement' => null,
                 'status' => $request->getStatus()
             ];
@@ -54,16 +55,6 @@ class UserRequestController extends ApiController
                     'fields' => $requirement->getFields(),
                     'created_at' => $requirement->getCreatedAt(),
                     'updated_at' => $requirement->getUpdatedAt()
-                ];
-            }
-
-            if (!is_null($file = $request->getFile())) {
-                $item['file'] = [
-                    'id' => $file->getId(),
-                    'title' => $file->getTitle(),
-                    'type' => $file->getType(),
-                    'path' => $file->getPath(),
-                    'created_at' => $file->getCreatedAt()
                 ];
             }
 
@@ -97,7 +88,6 @@ class UserRequestController extends ApiController
         $item = [
             'id' => $requests->getId(),
             'created_at' => $requests->getCreatedAt(),
-            'file' => null,
             'requirement' => null,
             'status' => $requests->getStatus()
         ];
@@ -110,17 +100,6 @@ class UserRequestController extends ApiController
                 'updated_at' => $requirement->getUpdatedAt()
             ];
         }
-
-        if (!is_null($file = $requests->getFile())) {
-            $item['file'] = [
-                'id' => $file->getId(),
-                'title' => $file->getTitle(),
-                'type' => $file->getType(),
-                'path' => $file->getPath(),
-                'created_at' => $file->getCreatedAt()
-            ];
-        }
-
 
         return new JsonResponse([
             'response' => $item
@@ -135,7 +114,10 @@ class UserRequestController extends ApiController
      */
     public function create(Request $request, ValidatorInterface $validator)
     {
-        $user = $this->getDoctrine()->getRepository(Users::class)->find($this->getUser()->getId());
+        /**
+         * @var $user Users
+         */
+        $user = $this->getUser();
         $parametersAsArray = [];
         $em = $this->getDoctrine()->getManager();
         if ($content = $request->getContent()) {
@@ -151,12 +133,12 @@ class UserRequestController extends ApiController
         } else {
             $requirement = null;
         }
-
-
+        $requirement = $this->getDoctrine()->getRepository(Requirements::class)->find($requirement);
+        $file = $this->getDoctrine()->getRepository(Files::class)->find($file);
         $userRequest = new UserRequest();
-        $userRequest->setFile($file);
         $userRequest->setRequirement($requirement);
         $userRequest->setUser($user);
+        $userRequest->setStatus("0");
         $errors = $validator->validate($userRequest);
         if (count($errors) > 0) {
 
@@ -168,10 +150,12 @@ class UserRequestController extends ApiController
         }
 
         $em->persist($userRequest);
+        $file->setRequest($userRequest);
+        $em->persist($file);
         $em->flush();
 
         return new JsonResponse([
-            'message' => 'Created new user request'
+            'message' => 'Создан новый запрос на обработку документа'
         ]);
     }
 
@@ -185,7 +169,10 @@ class UserRequestController extends ApiController
      */
     public function update(Request $request, ValidatorInterface $validator, $id)
     {
-        $user = $this->getDoctrine()->getRepository(Users::class)->find($this->getUser()->getId());
+        /**
+         * @var $user Users
+         */
+        $user = $this->getUser();
         $parametersAsArray = [];
         $em = $this->getDoctrine()->getManager();
         if ($content = $request->getContent()) {
@@ -212,6 +199,8 @@ class UserRequestController extends ApiController
                 'message' => 'Requests not found'
             ]);
         }
+        $requirement = $this->getDoctrine()->getRepository(Requirements::class)->find($requirement);
+        $file = $this->getDoctrine()->getRepository(Files::class)->find($file);
         $userRequest->setFile($file);
         $userRequest->setRequirement($requirement);
         $userRequest->setUser($user);
@@ -226,6 +215,8 @@ class UserRequestController extends ApiController
         }
 
         $em->persist($userRequest);
+        $file->setRequest($userRequest);
+        $em->persist($file);
         $em->flush();
 
         return new JsonResponse([
@@ -254,36 +245,27 @@ class UserRequestController extends ApiController
             ]);
         }
         $em = $this->getDoctrine()->getManager();
-
-
+        foreach ($userRequest->getFiles() as $req) {
+            $userRequest->removeFile($req);
+        }
         $em->remove($userRequest);
         $em->flush();
 
         return new JsonResponse([
-            'message' => 'Delete user request'
+            'message' => 'Удален запрос на обработку документа'
         ]);
     }
 
     /**
-     * @Route("/user/requests/status/{id}", methods={"POST"})
+     * @Route("/user/requests/{id}/status/{status}", methods={"GET"})
      * @param $id
-     * @param Request $request
+     * @param $status
      * @return JsonResponse
      */
-    public function setStatus($id, Request $request)
+    public function setStatus($id, $status)
     {
 
         $userRequest = $this->getDoctrine()->getRepository(UserRequest::class)->find($id);
-
-        $parametersAsArray = [];
-        if ($content = $request->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-        }
-        if (array_key_exists('status', $parametersAsArray)) {
-            $status = $parametersAsArray['status'];
-        } else {
-            $status = null;
-        }
 
         if (is_null($userRequest)) {
             return new JsonResponse([
@@ -292,11 +274,8 @@ class UserRequestController extends ApiController
         }
         $userRequest->setStatus($status);
 
-
         $em = $this->getDoctrine()->getManager();
-
-
-        $em->remove($userRequest);
+        $em->persist($userRequest);
         $em->flush();
 
         return new JsonResponse([
