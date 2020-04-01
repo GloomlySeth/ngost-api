@@ -63,6 +63,11 @@ class Files
      */
     private $userRequests;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserRequest", inversedBy="files")
+     */
+    private $request;
+
     public function __construct()
     {
         $this->userRequests = new ArrayCollection();
@@ -192,6 +197,18 @@ class Files
                 $userRequest->setFile(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRequest(): ?UserRequest
+    {
+        return $this->request;
+    }
+
+    public function setRequest(?UserRequest $request): self
+    {
+        $this->request = $request;
 
         return $this;
     }
