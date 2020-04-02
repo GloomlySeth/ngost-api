@@ -58,20 +58,12 @@ class Files
      */
     private $updated_at;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserRequest", mappedBy="file", orphanRemoval=true)
-     */
-    private $userRequests;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\UserRequest", inversedBy="files")
      */
     private $request;
 
-    public function __construct()
-    {
-        $this->userRequests = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -166,37 +158,6 @@ class Files
     public function setUpdatedAt(): self
     {
         $this->updated_at = new DateTime();
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|UserRequest[]
-     */
-    public function getUserRequests(): Collection
-    {
-        return $this->userRequests;
-    }
-
-    public function addUserRequest(UserRequest $userRequest): self
-    {
-        if (!$this->userRequests->contains($userRequest)) {
-            $this->userRequests[] = $userRequest;
-            $userRequest->setFile($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserRequest(UserRequest $userRequest): self
-    {
-        if ($this->userRequests->contains($userRequest)) {
-            $this->userRequests->removeElement($userRequest);
-            // set the owning side to null (unless already changed)
-            if ($userRequest->getFile() === $this) {
-                $userRequest->setFile(null);
-            }
-        }
 
         return $this;
     }
