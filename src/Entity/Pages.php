@@ -60,6 +60,7 @@ class Pages
 
     /**
      * @ORM\Column(type="string", length=191, unique=true)
+     * @Assert\Unique(message="Slug должен быть уникален")
      */
     private $slug;
 

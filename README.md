@@ -275,7 +275,6 @@
                     data: 
                      {
                         "title": String,
-                        "slug": String,
                         "options": Array
                      }
                      

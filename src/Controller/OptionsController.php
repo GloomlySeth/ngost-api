@@ -6,6 +6,7 @@ use App\Entity\Contact;
 use App\Entity\Options;
 use App\Entity\Place;
 use App\Entity\Users;
+use Ausi\SlugGenerator\SlugGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,17 +74,13 @@ class OptionsController extends ApiController
     public function createOption (Request $request, ValidatorInterface $validator) {
         $em = $this->getDoctrine()->getManager();
         $params = $this->getRequest($request);
-        $option = $this->getDoctrine()->getRepository(Options::class)->findOneBy(["slug" => $params["slug"]]);
-        if (is_null($option)) {
-            $option = new Options();
-        }
+        $option = new Options();
         $option->setOptions($params["options"]);
         $option->setTitle($params["title"]);
-        $option->setSlug($params["slug"]);
-
+        $generator = new SlugGenerator();
+        $option->setSlug($generator->generate($params["title"]));
         $errors = $validator->validate($option);
         if (count($errors) > 0) {
-
             $errorsString = [];
             foreach ($errors as $error) {
                 $errorsString[$error->getPropertyPath()] = $error->getMessage();
