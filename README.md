@@ -238,7 +238,7 @@
                     
           1.3 Get page by slug
                 
-                  url: https://api.ngost.by/api/pages/{id}
+                  url: https://api.ngost.by/api/pages/{slug}
                   
                   method: GET
                        
@@ -262,3 +262,49 @@
                      "content": Array,
                      "status": String
                   }
+                  
+                  
+   7) Options
+         
+             1.1 Create options
+             
+                    url: https://api.ngost.by/api/options
+                
+                    data type: JSON
+                    method: POST
+                    data: 
+                     {
+                        "title": String,
+                        "slug": String,
+                        "options": Array
+                     }
+                     
+             1.2 Get all options
+                
+                     url: https://api.ngost.by/api/options
+                     method: GET
+                       
+             1.3 Get page by slug
+                   
+                     url: https://api.ngost.by/api/options/{slug}
+                     
+                     method: GET
+                          
+             1.4 DELETE option by slug
+                      
+                     url: https://api.ngost.by/api/options/{slug}
+                        
+                     method: DELETE
+                       
+             1.5 UPDATE option by slug
+                          
+                     url: https://api.ngost.by/api/options/{slug}/edit
+                            
+                     data type: JSON
+                     method: POST
+                     data: 
+                     {
+                       "title": String,
+                       "slug": String,
+                       "options": Array
+                     }

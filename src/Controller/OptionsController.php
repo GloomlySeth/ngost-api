@@ -98,7 +98,7 @@ class OptionsController extends ApiController
     }
 
     /**
-     * @Route("/options/{slug}", methods={"POST"})
+     * @Route("/options/{slug}/edit", methods={"POST"})
      * @param $slug
      * @param Request $request
      * @param ValidatorInterface $validator
