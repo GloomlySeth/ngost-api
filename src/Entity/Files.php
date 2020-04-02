@@ -60,7 +60,7 @@ class Files
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UserRequest", inversedBy="files", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserRequest", inversedBy="files")
      */
     private $request;
 
