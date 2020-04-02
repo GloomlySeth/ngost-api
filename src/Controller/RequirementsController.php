@@ -44,7 +44,7 @@ class RequirementsController extends ApiController
         $data = [];
         if (is_null($items)) {
             return new JsonResponse([
-                'message' => 'Нет текущих запросов'
+                'message' => 'Нет текущих требований'
             ]);
         }
 
@@ -52,6 +52,7 @@ class RequirementsController extends ApiController
             $temp = [
                 'id' => $item->getId(),
                 'user_created' => null,
+                'title' => $item->getTitle(),
                 'created_at' => $item->getCreatedAt(),
                 'updated_at' => $item->getUpdatedAt(),
                 'fields' => $item->getFields()
@@ -117,6 +118,7 @@ class RequirementsController extends ApiController
         $data = [
             'id' => $item->getId(),
             'user_created' => null,
+            'title' => $item->getTitle(),
             'created_at' => $item->getCreatedAt(),
             'updated_at' => $item->getUpdatedAt(),
             'fields' => $item->getFields()
