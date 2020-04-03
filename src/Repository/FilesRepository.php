@@ -43,7 +43,11 @@ class FilesRepository extends ServiceEntityRepository
             $builder->andWhere('f.user = :user');
             $builder->setParameter('user',$user);
         }
-        if ($sort) {
+        if (key($sort) == 'request.status') {
+            $builder->orderBy('r.status', $sort[key($sort)]);
+        } else if (key($sort) == 'request.requirement') {
+            $builder->orderBy('r.requirement', $sort[key($sort)]);
+        } else if ($sort) {
             $builder->orderBy('f.'.key($sort), $sort[key($sort)]);
         }
         if ($filter) {
