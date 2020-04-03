@@ -48,9 +48,7 @@ class FilesRepository extends ServiceEntityRepository
         }
         if ($filter) {
             $builder->innerJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request');
-            if ($filter === 'new'){
-                $builder->andWhere('r.status is NULL');
-            } else if ($filter !== 'process') {
+            if ($filter !== 'process') {
                 $builder->andWhere('r.status = :filter');
                 $builder->setParameter('filter', $filter);
             } else {
