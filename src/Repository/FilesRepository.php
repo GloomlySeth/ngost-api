@@ -53,7 +53,7 @@ class FilesRepository extends ServiceEntityRepository
 
         }
         if ($sort) {
-            $builder->orderBy('f.'.key($sort[0]), $sort[0]);
+            $builder->orderBy(key($sort[0]), $sort[0]);
         }
         if ($limit > 0) {
             $builder->setMaxResults($limit);
