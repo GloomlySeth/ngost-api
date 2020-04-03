@@ -47,7 +47,7 @@ class FilesRepository extends ServiceEntityRepository
             $builder->orderBy(key($sort), $sort[key($sort)]);
         }
         if ($filter) {
-            $builder->innerJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request_id');
+            $builder->innerJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request');
             if ($filter !== 'process') {
                 $builder->andWhere('r.status = :filter');
                 $builder->setParameter('filter', $filter);
