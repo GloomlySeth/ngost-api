@@ -168,10 +168,8 @@ class MediaController extends ApiController
     public function getFiles(Request $request)
     {
 
-        $filters = ["process","new","error","complete"];
         $response = [];
         $filter = $request->get('filter')?$request->get('filter'):null;
-        $filter = $filter?$filters[$filter]:null;
         /**
          * @var $user Users
          */
