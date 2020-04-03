@@ -41,6 +41,9 @@ class FilesRepository extends ServiceEntityRepository
             $builder->andWhere('f.user = :user');
             $builder->setParameter('user',$user);
         }
+        if ($sort) {
+            $builder->orderBy(key($sort), $sort);
+        }
         if ($filter) {
             $builder->innerJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request_id');
             if ($filter !== 'process') {
@@ -50,10 +53,6 @@ class FilesRepository extends ServiceEntityRepository
                 $builder->andWhere('r.status > 0');
                 $builder->andWhere('r.status < 101');
             }
-
-        }
-        if ($sort) {
-            $builder->orderBy(key($sort), $sort);
         }
         if ($limit > 0) {
             $builder->setMaxResults($limit);
