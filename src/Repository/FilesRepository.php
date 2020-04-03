@@ -37,9 +37,9 @@ class FilesRepository extends ServiceEntityRepository
      */
     public function filterBy (Users $user, $sort, $limit, $offset,$filter = null) {
         $builder = $this->_em->createQueryBuilder();
-//        if ($user) {
-//            $builder->andWhere('f.user', $user);
-//        }
+        if ($user) {
+            $builder->andWhere('f.user', $user);
+        }
         if ($filter) {
             $builder->innerJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request_id');
             if ($filter !== 'process') {
@@ -71,9 +71,9 @@ class FilesRepository extends ServiceEntityRepository
             ->select('COUNT(f.id)')
             ->from(Files::class, 'f')
         ;
-//        if ($user) {
-//            $builder->andWhere('f.user', $user);
-//        }
+        if ($user) {
+            $builder->andWhere('f.user', $user);
+        }
         try {
             return $builder->getQuery()->getSingleScalarResult();
         } catch (Exception $e) {
