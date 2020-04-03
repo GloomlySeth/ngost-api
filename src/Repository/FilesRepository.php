@@ -43,15 +43,9 @@ class FilesRepository extends ServiceEntityRepository
             $builder->andWhere('f.user = :user');
             $builder->setParameter('user',$user);
         }
-        if (key($sort) == 'request.status') {
-            $builder->orderBy('r.status', $sort[key($sort)]);
-        } else if (key($sort) == 'request.requirement') {
-            $builder->orderBy('r.requirement', $sort[key($sort)]);
-        } else if ($sort) {
-            $builder->orderBy('f.'.key($sort), $sort[key($sort)]);
-        }
+
+        $builder->innerJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request');
         if ($filter) {
-            $builder->innerJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request');
             if ($filter !== 'process') {
                 $builder->andWhere('r.status = :filter');
                 $builder->setParameter('filter', $filter);
@@ -59,6 +53,13 @@ class FilesRepository extends ServiceEntityRepository
                 $builder->andWhere('r.status > 0');
                 $builder->andWhere('r.status < 101');
             }
+        }
+        if (key($sort) == 'request.status') {
+            $builder->orderBy('r.status', $sort[key($sort)]);
+        } else if (key($sort) == 'request.requirement') {
+            $builder->orderBy('r.requirement', $sort[key($sort)]);
+        } else if ($sort) {
+            $builder->orderBy('f.'.key($sort), $sort[key($sort)]);
         }
         if ($limit > 0) {
             $builder->setMaxResults($limit);
