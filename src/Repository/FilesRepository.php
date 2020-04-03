@@ -37,7 +37,7 @@ class FilesRepository extends ServiceEntityRepository
      */
     public function filterBy (Users $user, $sort, $limit, $offset,$filter = null) {
         $builder = $this->_em->createQueryBuilder('qf');
-        $builder->select('qf');
+        $builder->select('f');
         $builder->from('App:Files', 'f');
         if ($user) {
             $builder->andWhere('f.user = :user');
