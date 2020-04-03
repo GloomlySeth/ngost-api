@@ -36,7 +36,7 @@ class FilesRepository extends ServiceEntityRepository
      * @return Files[]
      */
     public function filterBy (Users $user, $sort, $limit, $offset,$filter = null) {
-        $builder = $this->_em->createQueryBuilder();
+        $builder = $this->_em->createQueryBuilder('f');
         if ($user) {
             $builder->andWhere('f.user = :user');
             $builder->setParameter('user',$user);
@@ -45,7 +45,7 @@ class FilesRepository extends ServiceEntityRepository
             $builder->orderBy(key($sort), $sort[key($sort)]);
         }
         if ($filter) {
-            $builder->innerJoin(UserRequest::class, 'r');
+            $builder->innerJoin('user_request', 'r', 'WITH', 'r.id = f.request_id');
             if ($filter !== 'process') {
                 $builder->andWhere('r.status = :filter');
                 $builder->setParameter('filter', $filter);
