@@ -167,12 +167,26 @@ class MediaController extends ApiController
      */
     public function getFiles(Request $request)
     {
+
+        $filters = [
+            "process" => array('null', 'error', 'complete'),
+            "new" => null,
+            "error" => "error",
+            "complete" => "complete",
+        ];
         $response = [];
-        $files = $this->getDoctrine()->getRepository(Files::class)->findBy(
-            ['user' => $this->getUser()],
+        $filter = $request->get('filter')?$request->get('filter'):null;
+        $filter = $filter?$filters[$filter]:null;
+        /**
+         * @var $user Users
+         */
+        $user = $this->getUser();
+        $files = $this->getDoctrine()->getRepository(Files::class)->filterBy(
+            $user,
             $this->sorting($request),
             $this->getLimit($request),
-            $this->getOffset($request)
+            $this->getOffset($request),
+            $filter
         );
         if (is_null($files)) {
             return new JsonResponse([
@@ -199,11 +213,13 @@ class MediaController extends ApiController
             }
             $response[] = $data;
         }
+        /**
+         * @var $user Users
+         */
+        $user = $this->getUser();
         return new JsonResponse([
             'response' => $response,
-            'total' => $this->getDoctrine()->getRepository(Files::class)->total(
-                ['user' => $this->getUser()]
-            )
+            'total' => $this->getDoctrine()->getRepository(Files::class)->total($user)
         ], 200);
     }
 

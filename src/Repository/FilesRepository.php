@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Files;
 use App\Entity\News;
+use App\Entity\UserRequest;
+use App\Entity\Users;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -25,21 +27,52 @@ class FilesRepository extends ServiceEntityRepository
         parent::__construct($registry, Files::class);
     }
 
-    public function total (array $criteria) {
+    /**
+     * @param Users $user
+     * @param $sort
+     * @param $limit
+     * @param $offset
+     * @param null $filter
+     * @return Files[]
+     */
+    public function filterBy (Users $user, $sort, $limit, $offset,$filter = null) {
+        $builder = $this->_em->createQueryBuilder();
+        if ($user) {
+            $builder->andWhere('f.user', $user);
+        }
+        if ($filter) {
+            $builder->innerJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request_id');
+            if ($filter !== 'process') {
+                $builder->andWhere('r.status = :filter');
+                $builder->setParameter('filter', $filter);
+            } else {
+                $builder->andWhere('r.status > 0');
+                $builder->andWhere('r.status < 101');
+            }
+
+        }
+        if ($sort) {
+            $builder->addOrderBy('f.'.key($sort[0]), $sort[0]);
+        }
+        if ($limit > 0) {
+            $builder->setMaxResults($limit);
+            if ($offset > 0) {
+                $builder->setFirstResult(($offset - 1) * $limit);
+            } else {
+                $builder->setFirstResult(0);
+            }
+        }
+        return $builder->getQuery()->getResult();
+    }
+
+    public function total (Users $user) {
         $builder = $this->_em->createQueryBuilder();
         $builder
             ->select('COUNT(f.id)')
             ->from(Files::class, 'f')
         ;
-        if ($criteria) {
-            $criteria = Criteria::create();
-            foreach ($criteria as $criterion => $key) {
-                try {
-                    $criteria->andWhere(Criteria::expr()->eq($key, $criterion));
-                } catch (QueryException $e) {
-                    return 0;
-                }
-            }
+        if ($user) {
+            $builder->andWhere('f.user', $user);
         }
         try {
             return $builder->getQuery()->getSingleScalarResult();
