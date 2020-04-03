@@ -23,7 +23,11 @@ class ApiController extends AbstractController
     }
 
     public function getLimit (Request $request) {
-        $limit = $request->get('limit')?$request->get('limit'):self::LIMIT;
+        if ($request->get('limit') == 0) {
+            $limit = 0;
+        } else {
+            $limit = $request->get('limit')?$request->get('limit'):self::LIMIT;
+        }
         return $limit;
     }
 
