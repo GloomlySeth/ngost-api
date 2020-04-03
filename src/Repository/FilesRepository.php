@@ -44,7 +44,7 @@ class FilesRepository extends ServiceEntityRepository
             $builder->setParameter('user',$user);
         }
 
-        $builder->innerJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request');
+        $builder->leftJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request');
         if ($filter) {
             if ($filter !== 'process') {
                 $builder->andWhere('r.status = :filter');
