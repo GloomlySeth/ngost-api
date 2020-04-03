@@ -55,14 +55,14 @@ class FilesRepository extends ServiceEntityRepository
         if ($sort) {
             $builder->addOrderBy('f.'.key($sort[0]), $sort[0]);
         }
-        if ($limit > 0) {
-            $builder->setMaxResults($limit);
-            if ($offset > 0) {
-                $builder->setFirstResult(($offset - 1) * $limit);
-            } else {
-                $builder->setFirstResult((1 - 1) * $limit);
-            }
-        }
+//        if ($limit > 0) {
+//            $builder->setMaxResults($limit);
+//            if ($offset > 0) {
+//                $builder->setFirstResult(($offset - 1) * $limit);
+//            } else {
+//                $builder->setFirstResult((1 - 1) * $limit);
+//            }
+//        }
         return $builder->getQuery()->getResult();
     }
 
