@@ -64,7 +64,7 @@ class FilesRepository extends ServiceEntityRepository
         if ($limit > 0) {
             $builder->setMaxResults($limit);
             if ($offset > 0) {
-                $builder->setFirstResult(($offset - 1) * $limit);
+                $builder->setFirstResult($offset - 1);
             } else {
                 $builder->setFirstResult(0);
             }
