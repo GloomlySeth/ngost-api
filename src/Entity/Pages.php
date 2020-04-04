@@ -144,9 +144,6 @@ class Pages
         return $this;
     }
 
-
-
-
     /**
      * @return mixed
      */

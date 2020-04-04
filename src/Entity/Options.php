@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OptionsRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Options
 {
@@ -32,6 +36,16 @@ class Options
      * @ORM\Column(type="array")
      */
     private $options = [];
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated_at;
 
     public function getId(): ?int
     {
@@ -70,6 +84,38 @@ class Options
     public function setOptions(array $options): self
     {
         $this->options = $options;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @throws Exception
+     */
+    public function setCreatedAt(): self
+    {
+        $this->created_at =  new DateTime();
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @ORM\PreFlush
+     * @throws Exception
+     */
+    public function setUpdatedAt(): self
+    {
+        $this->updated_at = new DateTime();
 
         return $this;
     }
