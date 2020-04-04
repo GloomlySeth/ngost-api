@@ -29,6 +29,7 @@ class Options
     /**
      * @ORM\Column(type="string", length=191, unique=true)
      * @Assert\Unique(message="Slug должен быть уникален")
+     * @Assert\Type(message="Slug может быть строкой")
      */
     private $slug;
 
