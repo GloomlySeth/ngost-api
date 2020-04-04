@@ -54,8 +54,7 @@ class OptionsController extends ApiController
      */
     public function getOption ($slug) {
         $option = $this->getDoctrine()->getRepository(Options::class)->findOneBy(["slug" => $slug]);
-        $response = [];
-        $response[] = [
+        $response = [
             "id" => $option->getId(),
             "title" => $option->getTitle(),
             "slug" => $option->getSlug(),
