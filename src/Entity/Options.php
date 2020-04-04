@@ -6,11 +6,16 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OptionsRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"slug"},
+ *     errorPath="slug",
+ *     message="Slug должен быть уникален."
+ * )
  */
 class Options
 {
@@ -28,7 +33,6 @@ class Options
 
     /**
      * @ORM\Column(type="string", length=191, unique=true)
-     * @Assert\Unique(message="Slug должен быть уникален")
      */
     private $slug;
 
