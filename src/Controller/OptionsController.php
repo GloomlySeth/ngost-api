@@ -80,14 +80,14 @@ class OptionsController extends ApiController
         $option->setTitle($params["title"]);
         $generator = new SlugGenerator();
         $option->setSlug($generator->generate($params["title"]));
-//        $errors = $validator->validate($option);
-//        if (count($errors) > 0) {
-//            $errorsString = [];
-//            foreach ($errors as $error) {
-//                $errorsString[$error->getPropertyPath()] = $error->getMessage();
-//            }
-//            return new JsonResponse($errorsString, 203);
-//        }
+        $errors = $validator->validate($option);
+        if (count($errors) > 0) {
+            $errorsString = [];
+            foreach ($errors as $error) {
+                $errorsString[$error->getPropertyPath()] = $error->getMessage();
+            }
+            return new JsonResponse($errorsString, 203);
+        }
         $em->persist($option);
         $em->flush();
         return new JsonResponse([
