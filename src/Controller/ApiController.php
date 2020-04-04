@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
-    const LIMIT = 15;
+    const LIMIT = null;
     const OFFSET = 0;
     const SORT_FIELD = 'created_at';
     const SORT_DIRECTION = 'DESC';
