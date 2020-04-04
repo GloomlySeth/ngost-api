@@ -123,7 +123,7 @@ class OptionsController extends ApiController
         $em->flush();
         return new JsonResponse([
             'message' => 'Изменен набор опций'
-        ]);
+        ], 201);
     }
 
     /**
