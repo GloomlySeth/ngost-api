@@ -81,6 +81,7 @@ class OptionsController extends ApiController
         $generator = new SlugGenerator();
         $option->setSlug($generator->generate($params["title"]));
         $errors = $validator->validate($option);
+        return new JsonResponse($params);
         if (count($errors) > 0) {
             $errorsString = [];
             foreach ($errors as $error) {
