@@ -282,4 +282,27 @@ class UserRequestController extends ApiController
             'message' => 'Status update'
         ]);
     }
+
+    /**
+     * @Route("/user/requests/{id}/rollback", methods={"DELETE"})
+     * @param $id
+     * @return JsonResponse
+     */
+    public function rollbackFile($id)
+    {
+        $file = $this->getDoctrine()->getRepository(Files::class)->find($id);
+        if (is_null($file)) {
+            return new JsonResponse([
+                'message' => 'Requests not exist'
+            ], 200);
+        }
+        $request = $file->getRequest();
+        $em = $this->getDoctrine()->getManager();
+        $file->setRequest(null);
+        $em->remove($request);
+        $em->flush();
+        return new JsonResponse([
+            'message' => 'Запрос отменен'
+        ], 200);
+    }
 }
