@@ -140,7 +140,7 @@ class OptionsController extends ApiController
             ]);
         }
         $em = $this->getDoctrine()->getManager();
-        $option = $this->getDoctrine()->getRepository(Options::class)->findOneBy(["slug" => $slug]);
+        $option = $this->getDoctrine()->getRepository(Options::class)->find($slug);
 
         $em->remove($option);
         $em->flush();
