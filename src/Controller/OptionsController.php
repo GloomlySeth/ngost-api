@@ -48,7 +48,7 @@ class OptionsController extends ApiController
     }
 
     /**
-     * @Route("/options/{id}", methods={"GET"})
+     * @Route("/options/{slug}", methods={"GET"})
      * @param $slug
      * @return JsonResponse
      */
