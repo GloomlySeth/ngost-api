@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
-    const LIMIT = 15;
+    const LIMIT = 0;
     const OFFSET = 0;
     const SORT_FIELD = 'created_at';
     const SORT_DIRECTION = 'DESC';
@@ -23,11 +23,7 @@ class ApiController extends AbstractController
     }
 
     public function getLimit (Request $request) {
-        if ($request->get('limit') == 0) {
-            $limit = 0;
-        } else {
-            $limit = $request->get('limit')?$request->get('limit'):self::LIMIT;
-        }
+        $limit = $request->get('limit')?$request->get('limit'):self::LIMIT;
         return $limit;
     }
 
