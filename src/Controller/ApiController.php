@@ -23,13 +23,11 @@ class ApiController extends AbstractController
     }
 
     public function getLimit (Request $request) {
-        $limit = $request->get('limit')?$request->get('limit'):self::LIMIT;
-        return $limit;
+        return $request->get('limit')?$request->get('limit'):self::LIMIT;
     }
 
     public function getOffset (Request $request) {
-        $offset = $request->get('offset')?$request->get('offset'):self::OFFSET;
-        return $offset;
+        return $request->get('offset')?$request->get('offset'):self::OFFSET;
     }
 
     /**
