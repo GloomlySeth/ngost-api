@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
  *     fields={"slug"},
- *     errorPath="slug",
+ *     errorPath="message",
  *     message="Slug должен быть уникален."
  * )
  */
