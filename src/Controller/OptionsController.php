@@ -127,20 +127,18 @@ class OptionsController extends ApiController
     }
 
     /**
-     * @Route("/options/{slug}", methods={"DELETE"})
-     * @param $slug
-     * @param Request $request
-     * @param ValidatorInterface $validator
+     * @Route("/options/{id}", methods={"DELETE"})
+     * @param $id
      * @return JsonResponse
      */
-    public function deleteOption ($slug, Request $request, ValidatorInterface $validator) {
+    public function deleteOption ($id) {
         if (!$this->isGranted("ROLE_ADMIN")) {
             return new JsonResponse([
                 'message' => 'Недостаточно прав'
             ]);
         }
         $em = $this->getDoctrine()->getManager();
-        $option = $this->getDoctrine()->getRepository(Options::class)->find($slug);
+        $option = $this->getDoctrine()->getRepository(Options::class)->find($id);
 
         $em->remove($option);
         $em->flush();
