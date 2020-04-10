@@ -32,10 +32,10 @@ class FilesRepository extends ServiceEntityRepository
      * @param $sort
      * @param $limit
      * @param $offset
-     * @param null $filter
+     * @param null $search
      * @return Files[]
      */
-    public function filterBy (Users $user, $sort, $limit, $offset,$filter = null) {
+    public function filterBy (Users $user, $sort, $limit, $offset,$search = null) {
         $builder = $this->_em->createQueryBuilder('qf');
         $builder->select('f');
         $builder->from('App:Files', 'f');
@@ -43,12 +43,16 @@ class FilesRepository extends ServiceEntityRepository
             $builder->andWhere('f.user = :user');
             $builder->setParameter('user',$user);
         }
+        if ($search['search']) {
+            $builder->andWhere('f.title LIKE :search');
+            $builder->setParameter('search', '%'.$search['search'].'%');
+        }
 
         $builder->leftJoin(UserRequest::class, 'r', 'WITH', 'r.id = f.request');
-        if ($filter) {
-            if ($filter !== 'process') {
+        if ($search['filter']) {
+            if ($search['filter'] !== 'process') {
                 $builder->andWhere('r.status = :filter');
-                $builder->setParameter('filter', $filter);
+                $builder->setParameter('filter', $search['filter']);
             } else {
                 $builder->andWhere('r.status > 0');
                 $builder->andWhere('r.status < 101');
@@ -72,12 +76,16 @@ class FilesRepository extends ServiceEntityRepository
         return $builder->getQuery()->getResult();
     }
 
-    public function total (Users $user) {
+    public function total (Users $user, $search = null) {
         $builder = $this->_em->createQueryBuilder();
         $builder
             ->select('COUNT(f.id)')
             ->from(Files::class, 'f')
         ;
+        if ($search['search']) {
+            $builder->andWhere('f.title LIKE :search');
+            $builder->setParameter('search', '%'.$search['search'].'%');
+        }
         if ($user) {
             $builder->andWhere('f.user = :user');
             $builder->setParameter('user',$user);
