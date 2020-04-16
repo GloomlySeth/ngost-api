@@ -27,12 +27,7 @@ class OptionsController extends ApiController
      * @return JsonResponse
      */
     public function getOptions(Request $request) {
-        $options = $this->getDoctrine()->getRepository(Options::class)->findBy(
-            [],
-            $this->sorting($request),
-            $this->getLimit($request),
-            $this->getOffset($request)
-        );
+        $options = $this->getDoctrine()->getRepository(Options::class)->findAll();
         $response = [];
         foreach ($options as $option) {
             $response[] = [
